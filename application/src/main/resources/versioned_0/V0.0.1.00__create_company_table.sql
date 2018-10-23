@@ -3,7 +3,7 @@ create table COMPANY (
   id serial primary key,
   company_id varchar(10) not null,
   name varchar(100) not null,
-  address varchar(250) not null,
+  address varchar(250),
   active varchar(1) not null default 'Y',
   official_language varchar(2) default 'en'
 );
