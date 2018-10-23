@@ -1,15 +1,11 @@
 package com.agh.hydra.common.model;
 
-import lombok.*;
+import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Setter
-@Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor(staticName = "of")
+@Value(staticConstructor = "of")
 public class CompanyId implements ValueObject<String> {
 
     @NotBlank
