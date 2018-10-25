@@ -41,8 +41,8 @@ class CompanyServiceSpec extends Specification {
     }
 
 
-    List<Company> companies(int size){
-        return (1..size).collect {
+    def companies(int size){
+        (1..size).collect {
             Company.builder()
                     .companyId(CompanyId.of(randomString(8)))
                     .companyName(CompanyName.of(randomString(10)))

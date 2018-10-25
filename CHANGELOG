@@ -1,2 +1,3 @@
- - #2 [poznas] groovy spock tests config
- - #1 [poznas] mybatis config
+ - #8 clean maven structure, run test specs with each build
+ - #2 groovy spock tests config
+ - #1 mybatis config

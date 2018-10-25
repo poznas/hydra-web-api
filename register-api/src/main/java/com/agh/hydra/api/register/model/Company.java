@@ -37,7 +37,6 @@ public class Company {
     /**
      * language
      */
-    @Valid
     private Language language;
 
     /**

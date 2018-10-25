@@ -45,9 +45,10 @@
 		<apache.commons.lang.version>2.6</apache.commons.lang.version>
 
 		<!-- test dependencies properties -->
-		<junit.version>4.12</junit.version>
-		<spock.version>1.0-groovy-2.4</spock.version>
-		<org.codehaus.groovy.version>2.4.4</org.codehaus.groovy.version>
+		<spock.version>1.1-groovy-2.4</spock.version>
+		<org.codehaus.groovy.version>2.4.7</org.codehaus.groovy.version>
+		<codehaus.gmaven.plus.version>1.5</codehaus.gmaven.plus.version>
+		<maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -55,22 +56,17 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-rest</artifactId>
+				<version>${spring.boot.starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-groovy-templates</artifactId>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-security</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-validation</artifactId>
-			</dependency>
+
 			<dependency>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-core</artifactId>
+				<version>${org.flyway.version}</version>
 			</dependency>
 
 			<dependency>
@@ -87,15 +83,35 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
+				<version>${org.postgresql.version}</version>
 				<scope>runtime</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
 				<optional>true</optional>
 			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${apache.commons.lang.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
@@ -132,36 +148,82 @@
             </dependency>
 
 			<!--  test dependencies -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.spockframework</groupId>
-				<artifactId>spock-core</artifactId>
-				<version>${spock.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.groovy</groupId>
-				<artifactId>groovy-all</artifactId>
-				<version>${org.codehaus.groovy.version}</version>
-				<scope>test</scope>
-			</dependency>
-
 
 		</dependencies>
 	</dependencyManagement>
 
-	<build>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+		</dependency>
+
+		<!--  test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.spockframework</groupId>
+			<artifactId>spock-core</artifactId>
+			<version>${spock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>${org.codehaus.groovy.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+							<configuration>
+								<classifier>exec</classifier>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<plugin>
@@ -187,11 +249,11 @@
 						</compilerArgs>
 					</configuration>
 				</plugin>
-<!--
+
 				<plugin>
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
-					<version>1.5</version>
+					<version>${codehaus.gmaven.plus.version}</version>
 					<executions>
 						<execution>
 							<goals>
@@ -204,19 +266,35 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.20</version>
+					<version>${maven.surefire.plugin.version}</version>
 					<configuration>
-						<groups>com.testwithspring.master.UnitTest</groups>
 						<includes>
-							<include>**/*.groovy</include>
+							<include>%regex[.*Spec.*]</include>
 						</includes>
 					</configuration>
 				</plugin>
--->
+
 			</plugins>
 		</pluginManagement>
 
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
-
 
 </project>
