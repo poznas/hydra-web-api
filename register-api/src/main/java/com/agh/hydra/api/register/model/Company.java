@@ -38,9 +38,4 @@ public class Company {
      * language
      */
     private Language language;
-
-    /**
-     * Indicates whether company is active
-     */
-    private Boolean active;
 }
