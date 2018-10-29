@@ -18,7 +18,7 @@ class CompanyServiceSpec extends Specification {
     def service = new CompanyService(companyRepository)
 
     @Unroll
-    def "UpdateCompany() - happy path"() {
+    def "updateCompanies() - happy path"() {
         given:
         def request = [companies : inputCompanies] as UpdateCompaniesRequest
 
