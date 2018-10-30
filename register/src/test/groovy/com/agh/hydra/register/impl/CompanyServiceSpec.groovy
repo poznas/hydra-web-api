@@ -1,6 +1,7 @@
 package com.agh.hydra.register.impl
 
 import com.agh.hydra.api.register.model.Company
+import com.agh.hydra.api.register.request.CompaniesRequest
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest
 import com.agh.hydra.common.model.CompanyId
 import com.agh.hydra.common.model.CompanyName
@@ -10,6 +11,8 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static com.agh.hydra.common.util.RandomUtils.randomString
+import static java.util.Arrays.asList
+import static java.util.Collections.singletonList
 
 class CompanyServiceSpec extends Specification {
 
@@ -40,12 +43,66 @@ class CompanyServiceSpec extends Specification {
         companies(1)   | _
     }
 
+    @Unroll
+    def "invalidateCompanies() - happy path"() {
+        given:
+        def request = CompaniesRequest.of(requestedIds.collect {CompanyId.of(it)} as Set)
+
+        and:
+        1 * companyRepository.findCompanyByIds(requestedIds) >> companyEntities(requestedIds.size())
+        1 * companyRepository.invalidateCompanies(requestedIds)
+
+        when:
+        service.invalidateCompanies(request)
+
+        then:
+        noExceptionThrown()
+
+        where:
+        requestedIds             | _
+        asList("c1", "c2")       | _
+        asList("c1", "c2", "c3") | _
+        singletonList("c1")      | _
+    }
+
+    @Unroll
+    def "invalidateCompanies() - should throw an exception"() {
+        given:
+        def request = CompaniesRequest.of(requestedIds.collect {CompanyId.of(it)} as Set)
+
+        and:
+        1 * companyRepository.findCompanyByIds(requestedIds) >> companyEntities(requestedIds.size())
+        0 * companyRepository.invalidateCompanies(_ as List<String>)
+
+        when:
+        service.invalidateCompanies(request)
+
+        then:
+        def exception = thrown(RuntimeException.class)
+        assert exception.message == expectedMessage
+
+        where:
+        requestedIds             || expectedMessage
+        asList("c1", "c4")       || "Company 'c4' does not exist"
+        asList("c1", "c2", "h2") || "Company 'h2' does not exist"
+        singletonList("c6")      || "Company 'c6' does not exist"
+    }
+
 
     def companies(int size){
         (1..size).collect {
             Company.builder()
-                    .companyId(CompanyId.of(randomString(8)))
+                    .companyId(CompanyId.of("c" + it))
                     .companyName(CompanyName.of(randomString(10)))
+                    .build()
+        }
+    }
+
+    def companyEntities(int size){
+        (1..size).collect {
+            CompanyEntity.builder()
+                    .companyId("c" + it)
+                    .companyName(randomString(10))
                     .build()
         }
     }

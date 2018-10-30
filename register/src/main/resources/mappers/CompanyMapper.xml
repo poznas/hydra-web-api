@@ -19,11 +19,23 @@
     </sql>
 
 
-    <select id="findCompanyById" resultMap="CompanyResultMap">
+    <select id="findCompanyByIds" resultMap="CompanyResultMap">
         select
         <include refid="selectColumns"/>
-        from hydra.company WHERE company_id=#{companyId}
+        from hydra.company WHERE company_id in
+        <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
     </select>
+
+    <update id="invalidateCompanies" parameterType="String">
+        update hydra.company set
+            active = 'N'
+        where company_id in
+        <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </update>
 
     <update id="updateCompany" parameterType="com.agh.hydra.register.entity.CompanyEntity">
        update hydra.company set
