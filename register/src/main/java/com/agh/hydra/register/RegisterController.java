@@ -1,6 +1,7 @@
 package com.agh.hydra.register;
 
 
+import com.agh.hydra.api.register.request.CompaniesRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.api.register.service.ICompanyService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,18 @@ public class RegisterController {
 
     static final String REGISTER_CONTEXT = "/register";
     private static final String COMPANY_UPDATE = "/company/update";
+    private static final String COMPANY_INVALIDATE = "/company/invalidate";
 
     private final ICompanyService companyService;
 
 
     @PostMapping(COMPANY_UPDATE)
-    public void updateCompany(@Valid @NotNull @RequestBody UpdateCompaniesRequest request){
+    public void updateCompanies(@Valid @NotNull @RequestBody UpdateCompaniesRequest request) {
         companyService.updateCompanies(request);
+    }
+
+    @PostMapping(COMPANY_INVALIDATE)
+    public void invalidateCompanies(@Valid @NotNull @RequestBody CompaniesRequest request) {
+        companyService.invalidateCompanies(request);
     }
 }

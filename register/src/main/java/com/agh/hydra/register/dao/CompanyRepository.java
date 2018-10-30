@@ -4,10 +4,14 @@ import com.agh.hydra.register.entity.CompanyEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface CompanyRepository {
 
-    CompanyEntity findCompanyById(@Param("companyId") String companyId);
+    List<CompanyEntity> findCompanyByIds(@Param("companyIds") List<String> companyIds);
 
     void updateCompany(CompanyEntity entity);
+
+    void invalidateCompanies(@Param("companyIds") List<String> companyIds);
 }
