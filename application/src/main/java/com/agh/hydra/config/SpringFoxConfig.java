@@ -25,7 +25,8 @@ public class SpringFoxConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.agh.hydra"))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(getApiInfo());
+                .apiInfo(getApiInfo())
+                .useDefaultResponseMessages(false);
     }
 
     private ApiInfo getApiInfo() {

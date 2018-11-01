@@ -22,6 +22,12 @@
         </dependency>
         <dependency>
             <groupId>com.agh</groupId>
+            <artifactId>hydra-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.agh</groupId>
             <artifactId>hydra-wiki</artifactId>
             <version>${project.version}</version>
         </dependency>

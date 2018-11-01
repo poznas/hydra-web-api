@@ -4,6 +4,7 @@ package com.agh.hydra.register;
 import com.agh.hydra.api.register.request.CompaniesRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.api.register.service.ICompanyService;
+import com.agh.hydra.common.documentation.BaseDocumentation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -31,11 +32,13 @@ public class RegisterController {
     private final ICompanyService companyService;
 
 
+    @BaseDocumentation
     @PostMapping(COMPANY_UPDATE)
     public void updateCompanies(@Valid @NotNull @RequestBody UpdateCompaniesRequest request) {
         companyService.updateCompanies(request);
     }
 
+    @BaseDocumentation
     @PostMapping(COMPANY_INVALIDATE)
     public void invalidateCompanies(@Valid @NotNull @RequestBody CompaniesRequest request) {
         companyService.invalidateCompanies(request);
