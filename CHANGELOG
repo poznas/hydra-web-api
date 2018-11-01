@@ -1,3 +1,4 @@
+ - #19 rename core module folder
  - #19 impl sign in with google (OAuth 2.0 Bearer Token), secure APIs
  - #16 impl for service : POST register/company/invalidate
  - #3 config springfox swagger api-docs
