@@ -12,13 +12,15 @@
 	<description>AGH Software Engineering Project</description>
 
 	<modules>
+		<module>application</module>
+		<module>hydra-core</module>
+		<module>common</module>
+
 		<module>wiki</module>
 		<module>wiki-api</module>
 		<module>register</module>
 		<module>register-api</module>
-		<module>application</module>
-		<module>common</module>
-	</modules>
+    </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -36,7 +38,7 @@
 		<spring.boot.starter.version>2.0.6.RELEASE</spring.boot.starter.version>
 		<start-class>com.agh.hydra.HydraApplication</start-class>
 
-		<guava.version>27.0-jre</guava.version>
+		<guava.version>20.0</guava.version>
 		<org.postgresql.version>42.2.5</org.postgresql.version>
 		<org.flyway.version>5.0.7</org.flyway.version>
 		<maven.flyway.plugin.version>5.2.0</maven.flyway.plugin.version>
@@ -51,10 +53,13 @@
 		<maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
 
 		<!-- auto doc dependencies properties -->
-		<springfox.version>2.9.2</springfox.version>
+		<springfox.version>2.8.0</springfox.version>
 		<springfox.spring.plugin.version>1.2.0.RELEASE</springfox.spring.plugin.version>
-		<springfox.javadoc.version>0.9.4</springfox.javadoc.version>
-		<maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+		<jaxb-api.version>2.3.0</jaxb-api.version>
+
+		<!-- auth -->
+		<google.api.client.version>1.22.0</google.api.client.version>
+		<jjwt.version>0.7.0</jjwt.version>
 	</properties>
 
 	<dependencyManagement>
@@ -136,9 +141,6 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${org.mapstruct.version}</version>
             </dependency>
-
-			<!--  test dependencies -->
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -228,11 +230,10 @@
 			<artifactId>spring-plugin-metadata</artifactId>
 			<version>${springfox.spring.plugin.version}</version>
 		</dependency>
-
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-javadoc</artifactId>
-			<version>0.9.4</version>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${javax-jaxb.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -300,34 +301,6 @@
 							<include>%regex[.*Spec.*]</include>
 						</includes>
 					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.4</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>javadoc</goal>
-							</goals>
-							<phase>process-classes</phase>
-							<configuration>
-								<doclet>springfox.javadoc.doclet.SwaggerPropertiesDoclet</doclet>
-								<docletArtifact>
-									<groupId>io.springfox</groupId>
-									<artifactId>springfox-javadoc</artifactId>
-									<version>0.9.4</version>
-								</docletArtifact>
-								<additionalparam>
-									-classdir ${project.build.outputDirectory}
-								</additionalparam>
-								<sourcepath>${project.build.sourceDirectory}</sourcepath>
-								<subpackages>com.agh.hydra</subpackages>
-								<useStandardDocletOptions>false</useStandardDocletOptions>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
