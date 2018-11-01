@@ -28,6 +28,32 @@
         </foreach>
     </select>
 
+    <select id="getCompaniesPageByIds" resultMap="CompanyResultMap">
+        select
+        <include refid="selectColumns"/>
+        from hydra.company
+          where active = 'Y'
+        <if test="companyIds != null">
+             and company_id in
+            <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+                #{companyId}
+            </foreach>
+        </if>
+        offset #{offset}
+        limit #{pageSize}
+    </select>
+
+    <select id="getCompaniesCount" resultType="long">
+        select count(*) from hydra.company
+          where active = 'Y'
+        <if test="companyIds != null">
+            and company_id in
+            <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+                #{companyId}
+            </foreach>
+        </if>
+    </select>
+
     <update id="invalidateCompanies" parameterType="String">
         update hydra.company set
             active = 'N'

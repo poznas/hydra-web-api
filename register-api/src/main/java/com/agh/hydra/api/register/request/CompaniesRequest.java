@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.Set;
 
 @Setter
@@ -17,5 +18,6 @@ public class CompaniesRequest {
     /**
      * Company identifiers
      */
+    @Valid
     private Set<CompanyId> companyIds;
 }

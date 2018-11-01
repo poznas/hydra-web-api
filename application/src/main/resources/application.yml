@@ -26,6 +26,8 @@ spring:
       enabled: always
   flyway:
     enabled: false
+  jackson:
+    default-property-inclusion: non_null
 
 #My batis
 mybatis:
