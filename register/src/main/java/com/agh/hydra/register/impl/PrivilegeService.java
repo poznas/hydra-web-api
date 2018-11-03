@@ -51,4 +51,11 @@ public class PrivilegeService implements IPrivilegeService {
 
         privilegeRepository.addPrivileges(getValue(request.getUserId()), request.getPrivileges());
     }
+
+    @Override
+    public void removePrivileges(@Valid @NotNull UpdatePrivilegesRequest request, @Valid @NotNull UserId performerId) {
+        throwIfUnprivileged(performerId, FN_PRV_EDIT_PRIVILEGES);
+
+        privilegeRepository.removePrivileges(getValue(request.getUserId()), request.getPrivileges());
+    }
 }

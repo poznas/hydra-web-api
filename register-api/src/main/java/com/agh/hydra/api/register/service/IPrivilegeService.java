@@ -36,4 +36,11 @@ public interface IPrivilegeService {
      * @param performerId performer identifier
      */
     void addPrivileges(@Valid @NotNull UpdatePrivilegesRequest request, @Valid @NotNull UserId performerId);
+
+    /**
+     * Removes privileges assigned to user specified in request
+     * @param request update privileges request
+     * @param performerId performer identifier
+     */
+    void removePrivileges(@Valid @NotNull UpdatePrivilegesRequest request, @Valid @NotNull UserId performerId);
 }
