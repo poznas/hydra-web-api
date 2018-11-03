@@ -5,24 +5,16 @@ import com.agh.hydra.core.auth.filter.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+@Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final LoginFilter loginFilter;
     private final BearerFilter bearerFilter;
-
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .anyRequest().permitAll();
-    }
 
     @Bean
     public FilterRegistrationBean loginRegistrationBean() {
@@ -37,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         FilterRegistrationBean<BearerFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(bearerFilter);
         filterRegistrationBean.setUrlPatterns(List.of("/*"));
+        bearerFilter.setPublicResourcePaths(List.of("/auth/login", "/v2/api-docs"));
         return filterRegistrationBean;
     }
 }

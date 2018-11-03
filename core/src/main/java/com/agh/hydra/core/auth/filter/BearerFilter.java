@@ -2,6 +2,7 @@ package com.agh.hydra.core.auth.filter;
 
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.core.auth.TokenProvider;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
+@Setter
 @Component
 public class BearerFilter extends OncePerRequestFilter implements AuthFilter {
 
-    private static final List<String> PUBLIC_RESOURCE_PATHS = List.of("/auth/login", "/v2/api-docs");
+    private List<String> publicResourcePaths;
     private AntPathMatcher matcher = new AntPathMatcher();
 
     @Override
@@ -47,7 +50,7 @@ public class BearerFilter extends OncePerRequestFilter implements AuthFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return PUBLIC_RESOURCE_PATHS.stream()
+        return ofNullable(publicResourcePaths).orElse(emptyList()).stream()
                 .anyMatch(pattern -> matcher.match(pattern, request.getServletPath()));
     }
 }

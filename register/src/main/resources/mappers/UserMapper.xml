@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agh.hydra.register.dao.UserRepository">
+
+    <resultMap id="UserResultMap" type="com.agh.hydra.register.entity.UserEntity">
+        <id column="user_id" property="id" />
+        <result column="username" property="username" />
+        <result column="email" property="email" />
+        <result column="imageUrl" property="imageUrl" />
+        <result column="provider" property="provider" />
+    </resultMap>
+
+    <update id="updateUser" parameterType="com.agh.hydra.register.entity.UserEntity">
+       update hydra.HYDRA_USER set
+              username = #{username},
+              email = #{email},
+              imageUrl = #{imageUrl},
+              provider = #{provider}
+          where user_id = #{id};
+
+       insert into hydra.HYDRA_USER (user_id, username, email, imageUrl, provider)
+              select  #{id}, #{username}, #{email}, #{imageUrl}, #{provider}
+              where not exists (select 1 from hydra.HYDRA_USER where user_id = #{id});
+     </update>
+</mapper>

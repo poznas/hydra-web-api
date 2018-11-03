@@ -11,8 +11,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 import static com.agh.hydra.common.model.AuthenticationProvider.GOOGLE;
@@ -41,8 +39,8 @@ public class GoogleTokenVerifier implements TokenVerifier {
 
         try {
             return verifier.verify(tokenId).getPayload();
-        } catch (GeneralSecurityException | IOException e) {
-            throw new InvalidTokenException(e.getMessage());
+        } catch (Exception e) {
+            throw new InvalidTokenException("invalid ID token");
         }
     }
 
