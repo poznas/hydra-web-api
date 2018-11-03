@@ -15,4 +15,6 @@ public interface PrivilegeRepository {
     boolean hasPrivilege(@Param("userId") String userId, @Param("privilege") String privilege);
 
     void addPrivileges(@Param("userId") String userId, @Param("privileges") Set<FunctionalPrivilege> privileges);
+
+    void removePrivileges(@Param("userId") String userId, @Param("privileges") Set<FunctionalPrivilege> privileges);
 }

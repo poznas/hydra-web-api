@@ -1,3 +1,4 @@
+ - #23 impl for service : POST auth/privileges/remove
  - #23 impl for service : POST auth/privileges/add
  - #23 impl for service : GET auth/privileges/{userId}
  - #19 impl user repository

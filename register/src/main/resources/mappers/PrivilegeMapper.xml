@@ -26,4 +26,12 @@
               )
         </foreach>
     </update>
+
+    <delete id="removePrivileges" >
+        <foreach collection="privileges" item="privilege" index="index" open="" separator=";" close="">
+            delete from hydra.privilege
+                where user_id = #{userId}
+                and privilege_id = #{privilege}
+        </foreach>
+    </delete>
 </mapper>

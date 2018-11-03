@@ -30,6 +30,7 @@ public class AuthController {
     private static final String AUTH_LOGIN = "/login";
     private static final String AUTH_PRIVILEGES = "/privileges/{userId}";
     private static final String AUTH_PRIVILEGES_ADD = "/privileges/add";
+    private static final String AUTH_PRIVILEGES_REMOVE = "/privileges/remove";
 
     private final IPrivilegeService privilegeService;
 
@@ -60,5 +61,12 @@ public class AuthController {
     public void addPrivileges(@Valid @NotNull @RequestBody UpdatePrivilegesRequest request,
                               @ApiIgnore @RequestAttribute UserId userId) {
         privilegeService.addPrivileges(request, userId);
+    }
+
+    @BaseDocumentation
+    @PostMapping(AUTH_PRIVILEGES_REMOVE)
+    public void removePrivileges(@Valid @NotNull @RequestBody UpdatePrivilegesRequest request,
+                                 @ApiIgnore @RequestAttribute UserId userId) {
+        privilegeService.removePrivileges(request, userId);
     }
 }
