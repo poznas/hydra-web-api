@@ -4,6 +4,26 @@
 
 
     <select id="getPrivileges" resultType="com.agh.hydra.common.model.FunctionalPrivilege" >
-        select privilege_id from hydra.privilege WHERE user_id = #{userId}
+        select privilege_id from hydra.privilege where user_id = #{userId}
     </select>
+
+    <select id="hasPrivilege" resultType="boolean">
+        select exists (
+          select 1 from hydra.privilege
+            where user_id = #{userId}
+            and privilege_id = #{privilege}
+        )
+    </select>
+
+    <update id="addPrivileges" >
+        <foreach collection="privileges" item="privilege" index="index" open="" separator=";" close="">
+            insert into hydra.privilege (user_id, privilege_id)
+              select #{userId}, #{privilege}
+              where not exists (
+                      select 1 from hydra.privilege
+                          where user_id = #{userId}
+                          and privilege_id = #{privilege}
+              )
+        </foreach>
+    </update>
 </mapper>

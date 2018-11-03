@@ -3,7 +3,6 @@ package com.agh.hydra.core.auth.impl;
 import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.common.model.Username;
-import com.agh.hydra.core.auth.InvalidTokenException;
 import com.agh.hydra.core.auth.service.TokenVerifier;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.agh.hydra.common.exception.BusinessException.INVALID_TOKEN;
 import static com.agh.hydra.common.model.AuthenticationProvider.GOOGLE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -40,7 +40,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
         try {
             return verifier.verify(tokenId).getPayload();
         } catch (Exception e) {
-            throw new InvalidTokenException("invalid ID token");
+            throw INVALID_TOKEN.getException();
         }
     }
 

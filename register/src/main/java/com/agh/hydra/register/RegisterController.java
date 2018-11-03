@@ -5,13 +5,12 @@ import com.agh.hydra.api.register.request.CompaniesRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.api.register.service.ICompanyService;
 import com.agh.hydra.common.documentation.BaseDocumentation;
+import com.agh.hydra.common.model.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -34,13 +33,15 @@ public class RegisterController {
 
     @BaseDocumentation
     @PostMapping(COMPANY_UPDATE)
-    public void updateCompanies(@Valid @NotNull @RequestBody UpdateCompaniesRequest request) {
-        companyService.updateCompanies(request);
+    public void updateCompanies(@Valid @NotNull @RequestBody UpdateCompaniesRequest request,
+                                @ApiIgnore @RequestAttribute UserId userId) {
+        companyService.updateCompanies(request, userId);
     }
 
     @BaseDocumentation
     @PostMapping(COMPANY_INVALIDATE)
-    public void invalidateCompanies(@Valid @NotNull @RequestBody CompaniesRequest request) {
-        companyService.invalidateCompanies(request);
+    public void invalidateCompanies(@Valid @NotNull @RequestBody CompaniesRequest request,
+                                    @ApiIgnore @RequestAttribute UserId userId) {
+        companyService.invalidateCompanies(request, userId);
     }
 }

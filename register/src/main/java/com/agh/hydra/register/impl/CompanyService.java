@@ -4,6 +4,8 @@ import com.agh.hydra.api.register.model.Company;
 import com.agh.hydra.api.register.request.CompaniesRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.api.register.service.ICompanyService;
+import com.agh.hydra.api.register.service.IPrivilegeService;
+import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.common.util.ValueObjectUtil;
 import com.agh.hydra.register.dao.CompanyRepository;
 import com.agh.hydra.register.entity.CompanyEntity;
@@ -17,6 +19,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_EDIT_COMPANIES;
+import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_INVALIDATE_COMPANIES;
 import static com.agh.hydra.common.util.CollectionUtils.mapList;
 import static com.agh.hydra.common.util.CollectionUtils.mapSet;
 import static com.google.common.collect.Iterables.transform;
@@ -28,9 +32,11 @@ import static com.google.common.collect.Iterables.transform;
 public class CompanyService implements ICompanyService {
 
     private final CompanyRepository companyRepository;
+    private final IPrivilegeService privilegeService;
 
     @Override
-    public void updateCompanies(@Valid @NotNull UpdateCompaniesRequest request) {
+    public void updateCompanies(@Valid @NotNull UpdateCompaniesRequest request, UserId userId) {
+        privilegeService.throwIfUnprivileged(userId, FN_PRV_EDIT_COMPANIES);
         log.info("Attempt to update companies : {}", transform(request.getCompanies(), Company::getCompanyId));
 
         request.getCompanies().stream()
@@ -39,7 +45,8 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public void invalidateCompanies(@Valid @NotNull CompaniesRequest request) {
+    public void invalidateCompanies(@Valid @NotNull CompaniesRequest request, UserId userId) {
+        privilegeService.throwIfUnprivileged(userId, FN_PRV_INVALIDATE_COMPANIES);
         log.info("Attempt to update companies : {}", request.getCompanyIds());
 
         List<String> companyIds = mapList(request.getCompanyIds(), ValueObjectUtil::getValue);
