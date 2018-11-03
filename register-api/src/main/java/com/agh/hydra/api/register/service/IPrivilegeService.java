@@ -1,5 +1,6 @@
 package com.agh.hydra.api.register.service;
 
+import com.agh.hydra.api.register.request.UpdatePrivilegesRequest;
 import com.agh.hydra.common.model.FunctionalPrivilege;
 import com.agh.hydra.common.model.UserId;
 
@@ -14,4 +15,25 @@ public interface IPrivilegeService {
      * @return all privileges assigned to user
      */
     List<FunctionalPrivilege> getPrivileges(@Valid @NotNull UserId userId);
+
+    /**
+     * Checks whether user has given privilege
+     * @param userId user identifier
+     * @param privilege privilege
+     */
+    boolean hasPrivilege(@Valid @NotNull UserId userId, @NotNull FunctionalPrivilege privilege);
+
+    /**
+     * Throws exception if user has not given privilege
+     * @param userId user identifier
+     * @param privilege privilege
+     */
+    void throwIfUnprivileged(@Valid @NotNull UserId userId, @NotNull FunctionalPrivilege privilege);
+
+    /**
+     * Assigns new privileges to user specified in request
+     * @param request update privileges request
+     * @param performerId performer identifier
+     */
+    void addPrivileges(@Valid @NotNull UpdatePrivilegesRequest request, @Valid @NotNull UserId performerId);
 }

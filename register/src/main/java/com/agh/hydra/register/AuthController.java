@@ -1,5 +1,6 @@
 package com.agh.hydra.register;
 
+import com.agh.hydra.api.register.request.UpdatePrivilegesRequest;
 import com.agh.hydra.api.register.service.IPrivilegeService;
 import com.agh.hydra.common.documentation.BaseDocumentation;
 import com.agh.hydra.common.model.FunctionalPrivilege;
@@ -28,6 +29,7 @@ public class AuthController {
     static final String AUTH_CONTEXT = "/auth";
     private static final String AUTH_LOGIN = "/login";
     private static final String AUTH_PRIVILEGES = "/privileges/{userId}";
+    private static final String AUTH_PRIVILEGES_ADD = "/privileges/add";
 
     private final IPrivilegeService privilegeService;
 
@@ -51,5 +53,12 @@ public class AuthController {
     @GetMapping(AUTH_PRIVILEGES)
     public List<FunctionalPrivilege> getPrivileges(@Valid @NotNull @PathVariable("userId") UserId userId) {
         return privilegeService.getPrivileges(userId);
+    }
+
+    @BaseDocumentation
+    @PostMapping(AUTH_PRIVILEGES_ADD)
+    public void addPrivileges(@Valid @NotNull @RequestBody UpdatePrivilegesRequest request,
+                              @ApiIgnore @RequestAttribute UserId userId) {
+        privilegeService.addPrivileges(request, userId);
     }
 }
