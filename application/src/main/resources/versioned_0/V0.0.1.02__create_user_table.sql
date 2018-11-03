@@ -5,7 +5,8 @@ create table HYDRA_USER (
   username varchar(30) not null,
   email varchar(100),
   imageUrl varchar(500),
-  provider varchar(20)
+  provider varchar(20),
+  unique (user_id)
 );
 
 create unique index user_id_idx on HYDRA_USER (lower(user_id));
