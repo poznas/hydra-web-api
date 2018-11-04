@@ -12,6 +12,9 @@ import com.agh.hydra.register.entity.CompanyEntity;
 import com.agh.hydra.register.mapper.RegisterMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,11 +22,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static com.agh.hydra.common.exception.TechnicalException.COMPANY_NOT_FOUND;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_EDIT_COMPANIES;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_INVALIDATE_COMPANIES;
 import static com.agh.hydra.common.util.CollectionUtils.mapList;
 import static com.agh.hydra.common.util.CollectionUtils.mapSet;
 import static com.google.common.collect.Iterables.transform;
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
@@ -55,8 +60,25 @@ public class CompanyService implements ICompanyService {
 
         companyIds.forEach(id -> {
                     if(!mapSet(companyEntities, CompanyEntity::getCompanyId).contains(id))
-                        throw new RuntimeException("Company '" + id + "' does not exist");
+                        throw COMPANY_NOT_FOUND.throwWith(id);
                 });
         companyRepository.invalidateCompanies(companyIds);
+    }
+
+    @Override
+    public Page<Company> getCompanies(@Valid CompaniesRequest request, @NotNull Pageable pageable) {
+
+        List<String> companyIds = ofNullable(request)
+                .map(CompaniesRequest::getCompanyIds)
+                .map(ids -> mapList(ids, ValueObjectUtil::getValue))
+                .orElse(null);
+
+        List<CompanyEntity> companyEntities = companyRepository
+                .getCompaniesPageByIds(companyIds, pageable.getOffset(), pageable.getPageSize());
+
+        List<Company> companies = mapList(companyEntities, RegisterMapper.INSTANCE::mapCompanyEntity);
+        long total = companyRepository.getCompaniesCount(companyIds);
+
+        return new PageImpl<>(companies, pageable, total);
     }
 }

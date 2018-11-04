@@ -1,8 +1,11 @@
 package com.agh.hydra.api.register.service;
 
+import com.agh.hydra.api.register.model.Company;
 import com.agh.hydra.api.register.request.CompaniesRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.common.model.UserId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -22,4 +25,11 @@ public interface ICompanyService {
      * @param userId
      */
     void invalidateCompanies(@Valid @NotNull CompaniesRequest request, UserId userId);
+
+    /**
+     * Returns pageable list of companies
+     * @param request optional companies request
+     * @param pageable page parameters
+     */
+    Page<Company> getCompanies(@Valid CompaniesRequest request, @NotNull Pageable pageable);
 }
