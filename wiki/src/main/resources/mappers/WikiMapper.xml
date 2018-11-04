@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agh.hydra.wiki.dao.WikiRepository">
+
+    <resultMap id="InfoResultMap" type="com.agh.hydra.wiki.entity.RecruitmentInfoEntity">
+        <id column="id" property="id" />
+        <result column="user_id" property="authorId" />
+        <result column="company_id" property="companyId" />
+        <result column="recruitmentType" property="recruitmentType" />
+        <result column="programmingLanguage" property="programmingLanguage" />
+        <result column="content" property="content" />
+        <result column="active" property="active" />
+    </resultMap>
+
+    <sql id="selectColumns">
+        id,
+        user_id
+        company_id,
+        recruitmentType,
+        programmingLanguage,
+        content,
+        case when active = 'Y' then 1 else 0 end as active
+    </sql>
+
+
+    <update id="createInformation" parameterType="com.agh.hydra.wiki.entity.RecruitmentInfoEntity">
+       insert into hydra.RECRUITMENT_INFORMATION
+              (user_id, company_id, recruitmentType, programmingLanguage, content)
+              select  #{authorId}, #{companyId}, #{recruitmentType}, #{programmingLanguage}, #{content};
+     </update>
+</mapper>
