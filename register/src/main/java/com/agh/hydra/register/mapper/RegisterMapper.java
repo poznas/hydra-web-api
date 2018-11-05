@@ -28,6 +28,10 @@ public abstract class RegisterMapper {
 
     public abstract Company mapCompanyEntity(CompanyEntity entity);
 
+    @Mappings({@Mapping(target = "id", source = "id.value"),
+            @Mapping(target = "username", source = "username.value")})
+    public abstract UserEntity mapUser(User user);
+
     CompanyId mapCompanyId(String id) {
         return valueObject(id, CompanyId::of);
     }
@@ -39,8 +43,4 @@ public abstract class RegisterMapper {
     Language mapLanguage(String lang) {
         return Language.from(lang);
     }
-
-    @Mappings({@Mapping(target = "id", source = "id.value"),
-            @Mapping(target = "username", source = "username.value")})
-    public abstract UserEntity mapUser(User user);
 }

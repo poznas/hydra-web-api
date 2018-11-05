@@ -19,6 +19,16 @@
             <artifactId>hydra-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.agh</groupId>
+            <artifactId>hydra-wiki-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.agh</groupId>
+            <artifactId>hydra-register-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 

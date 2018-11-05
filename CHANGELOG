@@ -1,3 +1,4 @@
+ - #29 impl for service : POST wiki/recruitment/info/add
  - #27 impl for service : POST register/company/companies
  - #23 impl for service : POST auth/privileges/remove
  - #23 impl for service : POST auth/privileges/add
