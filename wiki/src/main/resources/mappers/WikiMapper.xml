@@ -28,4 +28,13 @@
               (user_id, company_id, recruitmentType, programmingLanguage, content)
               select  #{authorId}, #{companyId}, #{recruitmentType}, #{programmingLanguage}, #{content};
      </update>
+
+    <update id="invalidateInformation" parameterType="long">
+        update hydra.RECRUITMENT_INFORMATION set
+        active = 'N'
+        where id in
+        <foreach collection="list" item="informationId" index="index" open="(" separator="," close=")">
+            #{informationId}
+        </foreach>
+    </update>
 </mapper>
