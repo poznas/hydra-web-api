@@ -2,6 +2,7 @@ package com.agh.hydra.wiki;
 
 import com.agh.hydra.common.documentation.BaseDocumentation;
 import com.agh.hydra.common.model.UserId;
+import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
 import com.agh.hydra.wiki.service.IWikiService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class WikiController {
     static final String WIKI_CONTEXT = "/wiki";
     private static final String WIKI_RECRUITMENT_PATH = "/recruitment/info";
     private static final String WIKI_CREATE_INFO = WIKI_RECRUITMENT_PATH + "/add";
+    private static final String WIKI_INVALIDATE_INFO = WIKI_RECRUITMENT_PATH + "/invalidate";
 
     private final IWikiService wikiService;
 
@@ -33,5 +35,12 @@ public class WikiController {
     public void createRecruitmentInformation(@Valid @NotNull @RequestBody CreateRecruitmentInfoRequest request,
                                              @ApiIgnore @RequestAttribute UserId userId) {
         wikiService.createRecruitmentInformation(request, userId);
+    }
+
+    @BaseDocumentation
+    @PostMapping(WIKI_INVALIDATE_INFO)
+    public void invalidateRecruitmentInformation(@Valid @NotNull @RequestBody BaseInformationRequest request,
+                                                 @ApiIgnore @RequestAttribute UserId userId) {
+        wikiService.invalidateRecruitmentInformation(request, userId);
     }
 }

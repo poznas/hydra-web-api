@@ -1,6 +1,7 @@
 package com.agh.hydra.wiki.service;
 
 import com.agh.hydra.common.model.UserId;
+import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
 
 import javax.validation.Valid;
@@ -15,4 +16,12 @@ public interface IWikiService {
      */
     void createRecruitmentInformation(@Valid @NotNull CreateRecruitmentInfoRequest request,
                                       @Valid @NotNull UserId userId);
+
+    /**
+     * Disables recruitment information entry
+     * @param request request with info entry identifiers
+     * @param userId user identifier
+     */
+    void invalidateRecruitmentInformation(@Valid @NotNull BaseInformationRequest request,
+                                          @Valid @NotNull UserId userId);
 }
