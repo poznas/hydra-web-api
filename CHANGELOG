@@ -1,3 +1,4 @@
+ - #32 impl for service : POST wiki/recruitment/info/vote
  - #31 impl for service : POST wiki/recruitment/info/invalidate
  - #29 impl for service : POST wiki/recruitment/info/add
  - #27 impl for service : POST register/company/companies
