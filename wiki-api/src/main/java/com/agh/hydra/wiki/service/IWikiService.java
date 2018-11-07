@@ -3,6 +3,7 @@ package com.agh.hydra.wiki.service;
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
+import com.agh.hydra.wiki.request.VoteRequest;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -24,4 +25,12 @@ public interface IWikiService {
      */
     void invalidateRecruitmentInformation(@Valid @NotNull BaseInformationRequest request,
                                           @Valid @NotNull UserId userId);
+
+    /**
+     * Creates vote entity assigned to information
+     * @param request request with info entry identifier and vote value
+     * @param userId user identifier
+     */
+    void voteRecruitmentInformation(@Valid @NotNull VoteRequest request,
+                                    @Valid @NotNull UserId userId);
 }

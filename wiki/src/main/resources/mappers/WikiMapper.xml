@@ -33,8 +33,21 @@
         update hydra.RECRUITMENT_INFORMATION set
         active = 'N'
         where id in
-        <foreach collection="list" item="informationId" index="index" open="(" separator="," close=")">
+        <foreach collection="informationIds" item="informationId" index="index" open="(" separator="," close=")">
             #{informationId}
         </foreach>
+    </update>
+
+    <update id="updateInformationVote" >
+        update hydra.INFORMATION_VOTE set
+                            vote = #{vote}
+        where user_id = #{userId}
+          and information_id = #{informationId};
+
+       insert into hydra.INFORMATION_VOTE (user_id, information_id, vote)
+              select  #{userId}, #{informationId}, #{vote}
+              where not exists (select 1 from hydra.INFORMATION_VOTE
+                            where user_id = #{userId}
+                            and information_id = #{informationId});
     </update>
 </mapper>

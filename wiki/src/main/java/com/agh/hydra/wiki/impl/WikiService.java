@@ -8,6 +8,7 @@ import com.agh.hydra.wiki.entity.RecruitmentInfoEntity;
 import com.agh.hydra.wiki.mapper.WikiMapper;
 import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
+import com.agh.hydra.wiki.request.VoteRequest;
 import com.agh.hydra.wiki.service.IWikiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_INFOR
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_INVALIDATE_RECRUITMENT_INFO;
 import static com.agh.hydra.common.util.CollectionUtils.mapList;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
@@ -47,5 +49,14 @@ public class WikiService implements IWikiService {
                                                  @Valid @NotNull UserId userId) {
         privilegeService.throwIfUnprivileged(userId, FN_PRV_INVALIDATE_RECRUITMENT_INFO);
         wikiRepository.invalidateInformation(mapList(request.getIds(), ValueObject::getValue));
+    }
+
+    @Override
+    public void voteRecruitmentInformation(@Valid @NotNull VoteRequest request, @Valid @NotNull UserId userId) {
+        wikiRepository.updateInformationVote(getValue(userId), getValue(request.getInformationId()), getVote(request));
+    }
+
+    private String getVote(@Valid @NotNull VoteRequest request) {
+        return ofNullable(request.getVote()).map(Enum::name).orElse(null);
     }
 }

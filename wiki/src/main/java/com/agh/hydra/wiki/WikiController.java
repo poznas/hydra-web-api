@@ -4,6 +4,7 @@ import com.agh.hydra.common.documentation.BaseDocumentation;
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
+import com.agh.hydra.wiki.request.VoteRequest;
 import com.agh.hydra.wiki.service.IWikiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class WikiController {
     private static final String WIKI_RECRUITMENT_PATH = "/recruitment/info";
     private static final String WIKI_CREATE_INFO = WIKI_RECRUITMENT_PATH + "/add";
     private static final String WIKI_INVALIDATE_INFO = WIKI_RECRUITMENT_PATH + "/invalidate";
+    private static final String WIKI_VOTE_INFO = WIKI_RECRUITMENT_PATH + "/vote";
 
     private final IWikiService wikiService;
 
@@ -42,5 +44,12 @@ public class WikiController {
     public void invalidateRecruitmentInformation(@Valid @NotNull @RequestBody BaseInformationRequest request,
                                                  @ApiIgnore @RequestAttribute UserId userId) {
         wikiService.invalidateRecruitmentInformation(request, userId);
+    }
+
+    @BaseDocumentation
+    @PostMapping(WIKI_VOTE_INFO)
+    public void invalidateRecruitmentInformation(@Valid @NotNull @RequestBody VoteRequest request,
+                                                 @ApiIgnore @RequestAttribute UserId userId) {
+        wikiService.voteRecruitmentInformation(request, userId);
     }
 }
