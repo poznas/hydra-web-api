@@ -3,13 +3,27 @@
 <mapper namespace="com.agh.hydra.wiki.dao.WikiRepository">
 
     <resultMap id="InfoResultMap" type="com.agh.hydra.wiki.entity.RecruitmentInfoEntity">
-        <id column="id" property="id" />
-        <result column="user_id" property="authorId" />
-        <result column="company_id" property="companyId" />
-        <result column="recruitmentType" property="recruitmentType" />
-        <result column="programmingLanguage" property="programmingLanguage" />
-        <result column="content" property="content" />
-        <result column="active" property="active" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="authorId"/>
+        <result column="company_id" property="companyId"/>
+        <result column="recruitmentType" property="recruitmentType"/>
+        <result column="programmingLanguage" property="programmingLanguage"/>
+        <result column="content" property="content"/>
+        <result column="active" property="active"/>
+    </resultMap>
+
+    <resultMap id="InfoDetailsResultMap" type="com.agh.hydra.wiki.entity.RecruitmentInfoEntity">
+        <id column="id" property="id"/>
+        <result column="user_id" property="authorId"/>
+        <result column="company_id" property="companyId"/>
+        <result column="recruitmentType" property="recruitmentType"/>
+        <result column="programmingLanguage" property="programmingLanguage"/>
+        <result column="content" property="content"/>
+        <result column="active" property="active"/>
+        <result column="username" property="username"/>
+        <result column="imageUrl" property="userImageUrl"/>
+        <result column="companyName" property="companyName"/>
+        <result column="ratio" property="userReliabilityRatio"/>
     </resultMap>
 
     <sql id="selectColumns">
@@ -38,7 +52,7 @@
         </foreach>
     </update>
 
-    <update id="updateInformationVote" >
+    <update id="updateInformationVote">
         update hydra.INFORMATION_VOTE set
                             vote = #{vote}
         where user_id = #{userId}
@@ -50,4 +64,16 @@
                             where user_id = #{userId}
                             and information_id = #{informationId});
     </update>
+
+    <select id="getRecruitmentInformation"
+            resultMap="InfoDetailsResultMap"
+            parameterType="com.agh.hydra.wiki.model.RecruitmentInfoFilter">
+        select null
+    </select>
+
+    <select id="getInformationCount"
+            resultType="long"
+            parameterType="com.agh.hydra.wiki.model.RecruitmentInfoFilter">
+        select 10
+    </select>
 </mapper>

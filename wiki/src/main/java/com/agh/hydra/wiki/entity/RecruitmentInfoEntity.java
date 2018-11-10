@@ -2,11 +2,13 @@ package com.agh.hydra.wiki.entity;
 
 import com.agh.hydra.common.model.ProgrammingLanguage;
 import com.agh.hydra.common.model.RecruitmentType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecruitmentInfoEntity {
