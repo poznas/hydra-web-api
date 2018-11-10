@@ -1,9 +1,13 @@
 package com.agh.hydra.wiki.service;
 
 import com.agh.hydra.common.model.UserId;
+import com.agh.hydra.wiki.model.InformationDetails;
 import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
+import com.agh.hydra.wiki.request.RecruitmentInformationFilterRequest;
 import com.agh.hydra.wiki.request.VoteRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,4 +37,12 @@ public interface IWikiService {
      */
     void voteRecruitmentInformation(@Valid @NotNull VoteRequest request,
                                     @Valid @NotNull UserId userId);
+
+    /**
+     * @param request filter request
+     * @param pageable pageable
+     * @return filtered, paged and detailed information list
+     */
+    Page<InformationDetails> getRecruitmentInformation(@Valid RecruitmentInformationFilterRequest request,
+                                                       @NotNull Pageable pageable);
 }

@@ -2,9 +2,6 @@ package com.agh.hydra.register.entity;
 
 import lombok.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 @Setter
 @Getter
 @Builder

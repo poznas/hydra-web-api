@@ -1,3 +1,4 @@
+ - #30 add API and mock for service : POST wiki/recruitment/info/entries
  - #32 impl for service : POST wiki/recruitment/info/vote
  - #31 impl for service : POST wiki/recruitment/info/invalidate
  - #29 impl for service : POST wiki/recruitment/info/add
