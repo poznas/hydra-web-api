@@ -70,7 +70,8 @@ public class WikiService implements IWikiService {
         RecruitmentInfoFilter filter = WikiMapper.INSTANCE.mapFilterRequest(request);
         PageableUtils.setPageableParams(filter, pageable);
 
-        List<InformationDetails> informationDetails = wikiRepository.getRecruitmentInformation(filter);
+        List<InformationDetails> informationDetails =
+                mapList(wikiRepository.getRecruitmentInformation(filter), WikiMapper.INSTANCE::mapInfoDetails);
         long total = wikiRepository.getInformationCount(filter);
 
         return new PageImpl<>(informationDetails, pageable, total);

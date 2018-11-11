@@ -117,7 +117,7 @@ class CompanyServiceSpec extends Specification {
         def repoResult = mockCompanyRepositoryLogic(repoContent, requestedIds)
 
         and:
-        0 * privilegeService.throwIfUnprivileged(testUserId, _ as FunctionalPrivilege)
+        0 * privilegeService.throwIfUnprivileged(_ as UserId, _ as FunctionalPrivilege)
         1 * companyRepository.getCompaniesPageByIds(requestedIds, pageable.getOffset(), pageable.getPageSize()) >> repoResult
         1 * companyRepository.getCompaniesCount(requestedIds) >> repoResult.size()
 
@@ -125,8 +125,8 @@ class CompanyServiceSpec extends Specification {
         def result = service.getCompanies(request, pageable)
 
         then:
-        assert result.number == 0
-        assert result.size == 10
+        assert result.number == pageable.getOffset()
+        assert result.size == pageable.getPageSize()
         assert result.totalPages == (repoSize > 0 ? 1 : 0)
         assert result.numberOfElements == expectedIds.size()
         assert result.totalElements == expectedIds.size()
