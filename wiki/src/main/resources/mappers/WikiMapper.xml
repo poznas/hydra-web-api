@@ -10,9 +10,11 @@
         <result column="programmingLanguage" property="programmingLanguage"/>
         <result column="content" property="content"/>
         <result column="active" property="active"/>
+        <result column="up_votes" property="upVotes"/>
+        <result column="down_votes" property="downVotes"/>
     </resultMap>
 
-    <resultMap id="InfoDetailsResultMap" type="com.agh.hydra.wiki.entity.RecruitmentInfoEntity">
+    <resultMap id="InfoDetailsResultMap" type="com.agh.hydra.wiki.entity.RecruitmentInfoDetailsEntity">
         <id column="id" property="id"/>
         <result column="user_id" property="authorId"/>
         <result column="company_id" property="companyId"/>
@@ -20,20 +22,28 @@
         <result column="programmingLanguage" property="programmingLanguage"/>
         <result column="content" property="content"/>
         <result column="active" property="active"/>
+        <result column="up_votes" property="upVotes"/>
+        <result column="down_votes" property="downVotes"/>
         <result column="username" property="username"/>
         <result column="imageUrl" property="userImageUrl"/>
-        <result column="companyName" property="companyName"/>
+        <result column="name" property="companyName"/>
         <result column="ratio" property="userReliabilityRatio"/>
     </resultMap>
 
     <sql id="selectColumns">
-        id,
-        user_id
-        company_id,
-        recruitmentType,
-        programmingLanguage,
-        content,
-        case when active = 'Y' then 1 else 0 end as active
+        i.id,
+        i.user_id,
+        i.company_id,
+        i.recruitmentType,
+        i.programmingLanguage,
+        i.content,
+        case when i.active = 'Y' then 1 else 0 end as active,
+        sum(case when v.vote = 'UP' then 1 else 0 end) as up_votes,
+        sum(case when v.vote = 'DOWN' then 1 else 0 end) as down_votes,
+        u.username,
+        u.imageUrl,
+        c.name,
+        r.ratio
     </sql>
 
 
@@ -68,12 +78,84 @@
     <select id="getRecruitmentInformation"
             resultMap="InfoDetailsResultMap"
             parameterType="com.agh.hydra.wiki.model.RecruitmentInfoFilter">
-        select null
+        with RELIABILITY_RATIO as (
+          select user_id, (up_votes / (up_votes + down_votes)) as ratio from (
+              select u.user_id,
+                     sum(case
+                        when v.vote = 'UP'
+                        then 1 else 0 end) as up_votes,
+                     sum(case
+                        when v.vote = 'DOWN'
+                        then 1 else 0 end) as down_votes
+                from hydra.INFORMATION_VOTE v
+                    join hydra.RECRUITMENT_INFORMATION i on i.id = v.information_id
+                    join hydra.HYDRA_USER u on u.user_id = i.user_id
+                group by u.user_id
+          ) as votes
+        )
+        select <include refid="selectColumns"/>
+            from hydra.RECRUITMENT_INFORMATION i
+                left join hydra.COMPANY c on i.company_id = c.company_id
+                left join hydra.INFORMATION_VOTE v on i.id = v.information_id
+                left join hydra.HYDRA_USER u on u.user_id = i.user_id
+                left join RELIABILITY_RATIO r on r.user_id = i.user_id
+                <include refid="filterCriteria"/>
+            group by i.id, u.username, u.imageUrl, c.name, r.ratio
+            order by i.id
+        offset #{offset}
+        limit #{pageSize}
     </select>
 
     <select id="getInformationCount"
             resultType="long"
             parameterType="com.agh.hydra.wiki.model.RecruitmentInfoFilter">
-        select 10
+        select count(*) from hydra.RECRUITMENT_INFORMATION i
+        <include refid="filterCriteria"/>
     </select>
+
+    <sql id="filterCriteria" >
+        <where>
+            null is null
+            <include refid="informationIdFilter"/>
+            <include refid="companyIdFilter"/>
+            <include refid="recruitmentTypeFilter"/>
+            <include refid="programmingLanguageFilter"/>
+        </where>
+    </sql>
+
+    <sql id="informationIdFilter">
+        <if test="includeIds != null">
+            and i.id in
+            <foreach collection="includeIds" item="informationId" index="index" open="(" separator="," close=")">
+                #{informationId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="companyIdFilter">
+        <if test="companyIds != null">
+            and i.company_id in
+            <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+                #{companyId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="recruitmentTypeFilter">
+        <if test="types != null">
+            and i.recruitmentType in
+            <foreach collection="types" item="type" index="index" open="(" separator="," close=")">
+                #{type}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="programmingLanguageFilter">
+        <if test="languages != null">
+            and i.programmingLanguage in
+            <foreach collection="languages" item="language" index="index" open="(" separator="," close=")">
+                #{language}
+            </foreach>
+        </if>
+    </sql>
 </mapper>
