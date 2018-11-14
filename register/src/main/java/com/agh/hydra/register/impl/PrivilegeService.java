@@ -13,9 +13,12 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 import static com.agh.hydra.common.exception.BusinessException.UNPRIVILEGED;
+import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_INFORMATION;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_EDIT_PRIVILEGES;
+import static com.agh.hydra.common.util.CollectionUtils.asSet;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 
 @Slf4j
@@ -23,6 +26,8 @@ import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 @Validated
 @RequiredArgsConstructor
 public class PrivilegeService implements IPrivilegeService {
+
+    private static final Set<FunctionalPrivilege> DEFAULT_FN_PRIVILEGES = asSet(FN_PRV_CREATE_INFORMATION);
 
     private final PrivilegeRepository privilegeRepository;
 
@@ -57,5 +62,10 @@ public class PrivilegeService implements IPrivilegeService {
         throwIfUnprivileged(performerId, FN_PRV_EDIT_PRIVILEGES);
 
         privilegeRepository.removePrivileges(getValue(request.getUserId()), request.getPrivileges());
+    }
+
+    @Override
+    public void assignDefaultPrivileges(@Valid @NotNull UserId id) {
+        privilegeRepository.addPrivileges(getValue(id), DEFAULT_FN_PRIVILEGES);
     }
 }
