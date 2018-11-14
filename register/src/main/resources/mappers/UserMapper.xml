@@ -22,4 +22,11 @@
               select  #{id}, #{username}, #{email}, #{imageUrl}, #{provider}
               where not exists (select 1 from hydra.HYDRA_USER where user_id = #{id});
      </update>
+
+    <select id="userExists" parameterType="string" resultType="boolean">
+        select exists (
+          select 1 from hydra.HYDRA_USER
+            where user_id = #{userId}
+        )
+    </select>
 </mapper>

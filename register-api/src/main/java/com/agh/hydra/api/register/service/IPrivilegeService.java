@@ -43,4 +43,10 @@ public interface IPrivilegeService {
      * @param performerId performer identifier
      */
     void removePrivileges(@Valid @NotNull UpdatePrivilegesRequest request, @Valid @NotNull UserId performerId);
+
+    /**
+     * Assigns default set of functional privileges to user
+     * @param id user identifier
+     */
+    void assignDefaultPrivileges(@Valid @NotNull UserId id);
 }

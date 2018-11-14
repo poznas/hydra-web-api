@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -26,5 +28,9 @@ public class CollectionUtils {
 
     public static boolean haveSameElements(Collection<?> a, Collection<?> b) {
          return nonNull(a) && nonNull(b) && a.size() == b.size() && a.containsAll(b) && b.containsAll(a);
+    }
+
+    public static <T> Set<T> asSet(T... array) {
+         return ofNullable(array).map(Stream::of).map(stream -> stream.collect(toSet())).orElse(emptySet());
     }
 }

@@ -1,6 +1,7 @@
 package com.agh.hydra.core.auth.filter;
 
 import com.agh.hydra.api.register.model.User;
+import com.agh.hydra.api.register.service.IPrivilegeService;
 import com.agh.hydra.api.register.service.IUserService;
 import com.agh.hydra.core.auth.service.TokenVerifier;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,11 @@ public class LoginFilter implements Filter, AuthFilter {
 
     private final TokenVerifier tokenVerifier;
     private final IUserService userService;
+    private final IPrivilegeService privilegeService;
 
     @Override
-    public void init(FilterConfig filterConfig) { }
+    public void init(FilterConfig filterConfig) {
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -41,8 +44,13 @@ public class LoginFilter implements Filter, AuthFilter {
 
         Optional<User> user = ofNullable(request.getHeader(HEADER_ID_TOKEN)).map(tokenVerifier::verifyTokenId);
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
+            boolean isNewUser = !userService.userExists(user.get().getId());
             userService.updateUser(user.get());
+            if (isNewUser) {
+                privilegeService.assignDefaultPrivileges(user.get().getId());
+            }
+
             request.setAttribute(ATTRIBUTE_USER_ID, user.get().getId());
             addAuthorizationHeader(getValue(user.get().getId()), response);
             filterChain.doFilter(servletRequest, response);
@@ -52,5 +60,6 @@ public class LoginFilter implements Filter, AuthFilter {
     }
 
     @Override
-    public void destroy() { }
+    public void destroy() {
+    }
 }
