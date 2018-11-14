@@ -1,3 +1,4 @@
+ - #38 serialize value objects to JSON as values
  - #40 assign default privilege set to newly registered user
  - #30 add SQL impl for service : POST wiki/recruitment/info/entries
  - #30 add API and mock for service : POST wiki/recruitment/info/entries
