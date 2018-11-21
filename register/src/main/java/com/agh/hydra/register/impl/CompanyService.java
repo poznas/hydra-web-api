@@ -2,6 +2,7 @@ package com.agh.hydra.register.impl;
 
 import com.agh.hydra.api.register.model.Company;
 import com.agh.hydra.api.register.request.CompaniesRequest;
+import com.agh.hydra.api.register.request.CreateCompanyRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.api.register.service.ICompanyService;
 import com.agh.hydra.api.register.service.IPrivilegeService;
@@ -80,5 +81,11 @@ public class CompanyService implements ICompanyService {
         long total = companyRepository.getCompaniesCount(companyIds);
 
         return new PageImpl<>(companies, pageable, total);
+    }
+
+    @Override
+    public void createCompany(CreateCompanyRequest request, UserId userId) {
+        privilegeService.throwIfUnprivileged(userId, FN_PRV_EDIT_COMPANIES);
+        companyRepository.createCompany(RegisterMapper.INSTANCE.mapCreateCompanyRequest(request));
     }
 }
