@@ -2,6 +2,7 @@ package com.agh.hydra.register.mapper;
 
 import com.agh.hydra.api.register.model.Company;
 import com.agh.hydra.api.register.model.User;
+import com.agh.hydra.api.register.request.CreateCompanyRequest;
 import com.agh.hydra.common.BaseMapper;
 import com.agh.hydra.common.model.Language;
 import com.agh.hydra.register.entity.CompanyEntity;
@@ -27,4 +28,9 @@ public interface RegisterMapper extends BaseMapper {
     default Language mapLanguage(String lang) {
         return Language.from(lang);
     }
+
+    @Mappings({@Mapping(target = "active", ignore = true),
+            @Mapping(target = "companyId", ignore = true),
+            @Mapping(target = "language", source = "language.lowerCase")})
+    CompanyEntity mapCreateCompanyRequest(CreateCompanyRequest request);
 }

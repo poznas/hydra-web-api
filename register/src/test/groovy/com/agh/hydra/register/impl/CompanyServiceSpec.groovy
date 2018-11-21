@@ -2,12 +2,10 @@ package com.agh.hydra.register.impl
 
 import com.agh.hydra.api.register.model.Company
 import com.agh.hydra.api.register.request.CompaniesRequest
+import com.agh.hydra.api.register.request.CreateCompanyRequest
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest
 import com.agh.hydra.api.register.service.IPrivilegeService
-import com.agh.hydra.common.model.CompanyId
-import com.agh.hydra.common.model.CompanyName
-import com.agh.hydra.common.model.FunctionalPrivilege
-import com.agh.hydra.common.model.UserId
+import com.agh.hydra.common.model.*
 import com.agh.hydra.register.dao.CompanyRepository
 import com.agh.hydra.register.entity.CompanyEntity
 import org.springframework.data.domain.PageRequest
@@ -36,7 +34,6 @@ class CompanyServiceSpec extends Specification {
     @Unroll
     def "updateCompanies() - happy path"() {
         given:
-
         def request = [companies : inputCompanies] as UpdateCompaniesRequest
 
         and:
@@ -57,6 +54,30 @@ class CompanyServiceSpec extends Specification {
         companies(7)   | _
         companies(3)   | _
         companies(1)   | _
+    }
+
+    def "createCompany() - happy path"() {
+        given:
+        def request = [
+                companyName : CompanyName.of("TestCompanyName"),
+                address : "Test City 12",
+                language : Language.DE
+        ] as CreateCompanyRequest
+
+        and:
+        1 * privilegeService.throwIfUnprivileged(testUserId, FN_PRV_EDIT_COMPANIES)
+        1 * companyRepository.createCompany(_ as CompanyEntity) >> {
+            CompanyEntity entity ->
+                assert entity.companyName == request.companyName.value
+                assert entity.address == request.address
+                assert entity.language == request.language.lowerCase
+        }
+
+        when:
+        service.createCompany(request, testUserId)
+
+        then:
+        noExceptionThrown()
     }
 
     @Unroll

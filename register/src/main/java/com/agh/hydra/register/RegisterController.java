@@ -3,6 +3,7 @@ package com.agh.hydra.register;
 
 import com.agh.hydra.api.register.model.Company;
 import com.agh.hydra.api.register.request.CompaniesRequest;
+import com.agh.hydra.api.register.request.CreateCompanyRequest;
 import com.agh.hydra.api.register.request.UpdateCompaniesRequest;
 import com.agh.hydra.api.register.service.ICompanyService;
 import com.agh.hydra.common.documentation.BaseDocumentation;
@@ -32,6 +33,7 @@ import static com.agh.hydra.register.RegisterController.REGISTER_CONTEXT;
 public class RegisterController {
 
     static final String REGISTER_CONTEXT = "/register";
+    private static final String COMPANY_CREATE = "/company/add";
     private static final String COMPANY_UPDATE = "/company/update";
     private static final String COMPANY_INVALIDATE = "/company/invalidate";
     private static final String COMPANY_COMPANIES = "/company/companies";
@@ -58,5 +60,12 @@ public class RegisterController {
     public Page<Company> getCompanies(@ApiParam @Valid @Nullable @RequestBody CompaniesRequest request,
                                       @ApiIgnore @PageableDefault Pageable pageable) {
         return companyService.getCompanies(request, pageable);
+    }
+
+    @BaseDocumentation
+    @PostMapping(COMPANY_CREATE)
+    public void createCompanies(@Valid @NotNull @RequestBody CreateCompanyRequest request,
+                                @ApiIgnore @RequestAttribute UserId userId) {
+        companyService.createCompany(request, userId);
     }
 }

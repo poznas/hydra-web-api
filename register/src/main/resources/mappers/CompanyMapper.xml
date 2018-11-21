@@ -85,4 +85,9 @@
                       #{language}
               where not exists (select 1 from hydra.company where company_id = #{companyId});
      </update>
+
+    <insert id="createCompany" parameterType="com.agh.hydra.register.entity.CompanyEntity">
+        insert into hydra.company (name, address, official_language)
+          select #{companyName}, #{address}, #{language}
+    </insert>
 </mapper>

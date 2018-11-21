@@ -15,6 +15,8 @@ public interface CompanyRepository {
 
     List<CompanyEntity> findCompanyByIds(@Param("companyIds") List<String> companyIds);
 
+    void createCompany(CompanyEntity entity);
+
     void updateCompany(CompanyEntity entity);
 
     void invalidateCompanies(@Param("companyIds") List<String> companyIds);
