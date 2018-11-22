@@ -8,7 +8,7 @@
 #### PostgreSQL 
  * version: 10.5
  * recommended source: [enterprisedb.com](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
- * Process trough installer with default settings
+ * go trough installer with default settings
  * type **'_postgres_'** if prompted for postgres user password
  
 #### Intellij
