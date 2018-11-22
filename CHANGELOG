@@ -1,3 +1,4 @@
+ - #4 create project installation guide
  - #36 impl for service : POST register/company/add
  - #38 serialize value objects to JSON as values
  - #40 assign default privilege set to newly registered user
