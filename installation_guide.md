@@ -35,6 +35,16 @@
  ![](https://user-images.githubusercontent.com/23015353/48922087-7b91cc80-eea4-11e8-97bb-f215984309c4.png)
  
  
+<br>
+
+ #### Postman collection
+ ![](https://user-images.githubusercontent.com/23015353/48922407-cb719300-eea6-11e8-98b9-4c9da10a3afa.png)
+ 
+ <br>
+ 
+ #### REST API Swagger Docs
+ * copy response of [http://localhost:5000/hydra/v2/api-docs](http://localhost:5000/hydra/v2/api-docs)
+ * into [https://editor.swagger.io/#](https://editor.swagger.io/#)
  
  
  
