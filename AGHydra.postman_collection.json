@@ -1,0 +1,444 @@
+{
+	"info": {
+		"_postman_id": "0595bd8a-899c-4d9f-8ce4-172f18019508",
+		"name": "AGHydra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "REGISTER",
+			"item": [
+				{
+					"name": "/login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-ID-TOKEN",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhNDM2YzNmNjNiMjgxY2UwZDk3NmRhMGI1MWEzNDg2MGZmOTYwZWIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNzEyMzYzMTIyNzA2LXM2ZWxtYzRnaHFkYnE5czR1YXJtOGRzb2k5ODBvbGZtLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNzEyMzYzMTIyNzA2LXM2ZWxtYzRnaHFkYnE5czR1YXJtOGRzb2k5ODBvbGZtLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA1NDE1MTI5NjI0NDQ0Mjk2MTAxIiwiZW1haWwiOiJtaXN0ZXJkYW5ueXBsQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiTmtDMEplMHZ5S05PdVVWX2I0QVl4USIsIm5hbWUiOiJEYW5pZWwgUG96bmHFhHNraSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLW42b2pzdF9rWDE0L0FBQUFBQUFBQUFJL0FBQUFBQUFBR19ZLzhPZThaYmVqQXhJL3M5Ni1jL3Bob3RvLmpwZyIsImdpdmVuX25hbWUiOiJEYW5pZWwiLCJmYW1pbHlfbmFtZSI6IlBvem5hxYRza2kiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTU0MTI0NzU4MywiZXhwIjoxNTQxMjUxMTgzLCJqdGkiOiI5MzEwNmFhNjQ0YTA3ZTcxNTI4ZGMwOThmNDk4NGFiMTMxMTI1ZTUyIn0.BhnvrlKZ0FwjEyoFJDpF6RidLGoXifz7W-HsmR0964fAt76UbbyzR0Jstpz9_GFSFMQVmoRbMZSZg8JebV0WRr0zDni941Gp_V9kYfVX5Djx4ndH7KaHj93oDyAGQCUoeYoCHONxNKr8AyNNgIMxFI2aGE-hx2LRouSE6epreRP7zWOizlIgX4ecyJg-gmXGe55DVa7ELVhkx-My4R8Dixfr4TKaphHa6zfdRGM8FrIce9mSB_mbLu50QJZuYdb4BRMfW-6vQs2Wvq4W-qFF7MzpD23OVasKqvyhPE9jIxldWttBl6zsKQVmrpTapEEiCcasq4ZUbYCdkUPK41Oy4g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/auth/login",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{BEARER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"companies\" : [\r\n\t      \t{\r\n\t      \t\t\"companyId\" : \"wixapol\",\r\n\t      \t\t\"companyName\" : \"Wixapol S.A.\",\r\n\t      \t\t\"active\" : false\r\n\t      \t}\r\n      \t]\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/register/company/update",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"register",
+								"company",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t      \t\t\"companyName\" : \"Danone SA\",\r\n\t      \t\t\"address\" : \"ul. Starowislna\"\r\n\t      \t}"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/register/company/add",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"register",
+								"company",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Privileges",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/auth/privileges/sss",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"auth",
+								"privileges",
+								"sss"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add Privileges",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\" : \"105415129624444296101\",\n\t\"privileges\" : [\n    \"FN_PRV_EDIT_PRIVILEGES\",\n    \"FN_PRV_INVALIDATE_COMPANIES\",\n    \"FN_PRV_EDIT_COMPANIES\"\n]\n}"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/auth/privileges/add",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"auth",
+								"privileges",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove Privileges",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\" : \"105415129624444296101\",\n\t\"privileges\" : [\n    \"FN_PRV_INVALIDATE_COMPANIES\",\n    \"FN_PRV_EDIT_COMPANIES\"\n]\n}"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/auth/privileges/remove",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"auth",
+								"privileges",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InvalidateCompany",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{BEARER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"companyIds\" : [\r\n      \t\"openx\", \"sabre\"\r\n      \t]\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/register/company/invalidate",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"register",
+								"company",
+								"invalidate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Companies",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							},
+							{
+								"key": "X-HTTP-Method-Override",
+								"value": "GET",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"companyIds\" : [\r\n      \t\"openx\", \"sabre\", \"wixapol\"\r\n      \t]\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/register/company/companies?page=0&size=10",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"register",
+								"company",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WIKI",
+			"item": [
+				{
+					"name": "create recruitment info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{BEARER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"companies\" : [\r\n\t      \t{\r\n\t      \t\t\"companyId\" : \"wixapol\",\r\n\t      \t\t\"companyName\" : \"Wixapol S.A.\",\r\n\t      \t\t\"active\" : false\r\n\t      \t}\r\n      \t]\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/register/company/update",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"register",
+								"company",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalidate recruitment info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{BEARER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"ids\" : [3,5,2,1]\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/invalidate",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"wiki",
+								"recruitment",
+								"info",
+								"invalidate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get recruitment infos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"includeIds\" : [3,5,2,1],\n      \"companyIds\" : [\"ailleron\", \"sabre\"]\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/entries",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"wiki",
+								"recruitment",
+								"info",
+								"entries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vote recruitment info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"informationId\" : 1,\r\n      \"vote\" : \"UP\"\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/vote",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"wiki",
+								"recruitment",
+								"info",
+								"vote"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
