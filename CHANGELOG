@@ -1,3 +1,8 @@
+ - #47 add heroku 'Procfile'
+ - #47 delete 'mvnw' and 'mvnw.cmd'
+ - #47 add maven version to system.properties
+ - #47 create 'system.properties' for heroku purposes
+ - #47 specify java version for maven compiler plugin
  - #6 update project installation guide
  - #6 add initial postman collection and environment
  - #4 create project installation guide
