@@ -12,6 +12,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+@SuppressWarnings("squid:S1214")
 @Mapper(config = BaseMapper.class)
 public interface RegisterMapper extends BaseMapper {
 

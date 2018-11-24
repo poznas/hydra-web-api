@@ -33,7 +33,7 @@ import static com.agh.hydra.wiki.WikiController.WIKI_CONTEXT;
 public class WikiController {
 
     static final String WIKI_CONTEXT = "/wiki";
-    private static final String WIKI_RECRUITMENT_PATH = "/recruitment/info";
+    private static final String WIKI_RECRUITMENT_PATH = "/recruitment" + "/info";
     private static final String WIKI_CREATE_INFO = WIKI_RECRUITMENT_PATH + "/add";
     private static final String WIKI_INVALIDATE_INFO = WIKI_RECRUITMENT_PATH + "/invalidate";
     private static final String WIKI_VOTE_INFO = WIKI_RECRUITMENT_PATH + "/vote";

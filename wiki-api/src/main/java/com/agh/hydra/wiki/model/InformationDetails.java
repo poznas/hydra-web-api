@@ -14,6 +14,7 @@ import javax.validation.Valid;
 public class InformationDetails extends RecruitmentInformation {
 
     @Builder
+    @SuppressWarnings("squid:S00107")
     public InformationDetails(InformationId id, UserId authorId, CompanyId companyId, RecruitmentType recruitmentType,
                               ProgrammingLanguage programmingLanguage, InformationContent content, int upVotes,
                               int downVotes, Username username, String userImageUrl, CompanyName companyName,
