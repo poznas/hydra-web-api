@@ -31,6 +31,7 @@ public class LoginFilter implements Filter, AuthFilter {
 
     @Override
     public void init(FilterConfig filterConfig) {
+        log.debug("init " + this.getClass().getName());
     }
 
     @Override
@@ -61,5 +62,6 @@ public class LoginFilter implements Filter, AuthFilter {
 
     @Override
     public void destroy() {
+        log.debug("destroy " + this.getClass().getName());
     }
 }

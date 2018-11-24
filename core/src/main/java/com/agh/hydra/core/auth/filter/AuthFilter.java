@@ -4,6 +4,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.agh.hydra.core.auth.TokenProvider.getToken;
 
+/**
+ * squid:S1214
+ *
+ * Internal maven module, will not leak into the class's exported API
+ */
+@SuppressWarnings("squid:S1214")
 interface AuthFilter {
 
     String HEADER_AUTHORIZATION = "Authorization";

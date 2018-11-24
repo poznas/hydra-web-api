@@ -17,6 +17,7 @@ import org.mapstruct.factory.Mappers;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 import static com.agh.hydra.common.util.ValueObjectUtil.valueObject;
 
+@SuppressWarnings("squid:S1214")
 @Mapper(config = BaseMapper.class)
 public interface WikiMapper extends BaseMapper {
 
