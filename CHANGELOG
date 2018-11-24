@@ -1,3 +1,4 @@
+ - #6 fix postman collection
  - #47 add heroku 'Procfile'
  - #47 delete 'mvnw' and 'mvnw.cmd'
  - #47 add maven version to system.properties

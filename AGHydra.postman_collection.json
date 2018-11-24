@@ -316,18 +316,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n      \"companies\" : [\r\n\t      \t{\r\n\t      \t\t\"companyId\" : \"wixapol\",\r\n\t      \t\t\"companyName\" : \"Wixapol S.A.\",\r\n\t      \t\t\"active\" : false\r\n\t      \t}\r\n      \t]\r\n    }"
+							"raw": "{\r\n      \"companyId\" : \"schibsted\",\r\n      \"recruitmentType\" : \"TEST\",\r\n      \"content\" : \"Whas is the output of following command? : print('chuj');\",\r\n      \"programmingLanguage\" : \"PYTHON\"\r\n    }"
 						},
 						"url": {
-							"raw": "{{ENDPOINT}}/hydra/register/company/update",
+							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/add",
 							"host": [
 								"{{ENDPOINT}}"
 							],
 							"path": [
 								"hydra",
-								"register",
-								"company",
-								"update"
+								"wiki",
+								"recruitment",
+								"info",
+								"add"
 							]
 						}
 					},
