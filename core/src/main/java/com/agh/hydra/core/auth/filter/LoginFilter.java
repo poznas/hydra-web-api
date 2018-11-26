@@ -7,6 +7,7 @@ import com.agh.hydra.core.auth.service.TokenVerifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 import static java.util.Optional.ofNullable;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
@@ -43,7 +45,14 @@ public class LoginFilter implements Filter, AuthFilter {
 
         log.debug("Apply login filter : {}", request.getServletPath());
 
-        Optional<User> user = ofNullable(request.getHeader(HEADER_ID_TOKEN)).map(tokenVerifier::verifyTokenId);
+        Optional<User> user;
+        try {
+            user = ofNullable(request.getHeader(HEADER_ID_TOKEN))
+                    .map(tokenVerifier::verifyTokenId);
+        } catch (ResponseStatusException ex) {
+            response.sendError(BAD_REQUEST.value(), ex.getReason());
+            return;
+        }
 
         if (user.isPresent()) {
             boolean isNewUser = !userService.userExists(user.get().getId());

@@ -15,13 +15,15 @@ import java.util.List;
 import static com.agh.hydra.common.exception.BusinessException.INVALID_TOKEN;
 import static com.agh.hydra.common.model.AuthenticationProvider.GOOGLE;
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 
 @Component
 public class GoogleTokenVerifier implements TokenVerifier {
 
-    private static final String GOOGLE_CLIENT_ID =
-            "712363122706-s6elmc4ghqdbq9s4uarm8dsoi980olfm.apps.googleusercontent.com";
+    private static final String IOS_GOOGLE_CLIENT_ID
+            = "247473861221-kign0ef5lu2p8507or6l0k9h76b5spd6.apps.googleusercontent.com";
+    private static final String ANDROID_GOOGLE_CLIENT_ID
+            = "247473861221-mfl573u5b5rv7hmqtckj1evel5pem70p.apps.googleusercontent.com";
+
     private static final List<String> issuers = asList("https://accounts.google.com", "accounts.google.com");
 
     @Override
@@ -33,7 +35,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
 
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
                 .Builder(new NetHttpTransport(), new JacksonFactory())
-                .setAudience(singletonList(GOOGLE_CLIENT_ID))
+                .setAudience(asList(IOS_GOOGLE_CLIENT_ID, ANDROID_GOOGLE_CLIENT_ID))
                 .setIssuers(issuers)
                 .build();
 
@@ -44,7 +46,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
         }
     }
 
-    private User buildUser(Payload payload){
+    private User buildUser(Payload payload) {
         return User.builder()
                 .id(UserId.of(payload.getSubject()))
                 .username(Username.of((String) payload.get("name")))
