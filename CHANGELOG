@@ -1,3 +1,4 @@
+ - #53 change Google API Client IDs
  - fix sonar issues
  - #6 fix postman collection
  - #47 add heroku 'Procfile'
