@@ -45,7 +45,7 @@ public class AuthController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = "X-ID-TOKEN", value = "Authentication provider success response ID token",
                     required = true, dataType = "string", paramType = "header"))
-    @PostMapping(AUTH_LOGIN)
+    @GetMapping(AUTH_LOGIN)
     public void login(@ApiIgnore @RequestAttribute UserId userId) {
         log.info("Login success : {}", getValue(userId));
     }
@@ -64,7 +64,7 @@ public class AuthController {
     }
 
     @BaseDocumentation
-    @PostMapping(AUTH_PRIVILEGES_REMOVE)
+    @DeleteMapping(AUTH_PRIVILEGES_REMOVE)
     public void removePrivileges(@Valid @NotNull @RequestBody UpdatePrivilegesRequest request,
                                  @ApiIgnore @RequestAttribute UserId userId) {
         privilegeService.removePrivileges(request, userId);

@@ -42,21 +42,21 @@ public class RegisterController {
 
 
     @BaseDocumentation
-    @PostMapping(COMPANY_UPDATE)
+    @PutMapping(COMPANY_UPDATE)
     public void updateCompanies(@Valid @NotNull @RequestBody UpdateCompaniesRequest request,
                                 @ApiIgnore @RequestAttribute UserId userId) {
         companyService.updateCompanies(request, userId);
     }
 
     @BaseDocumentation
-    @PostMapping(COMPANY_INVALIDATE)
+    @PutMapping(COMPANY_INVALIDATE)
     public void invalidateCompanies(@Valid @NotNull @RequestBody CompaniesRequest request,
                                     @ApiIgnore @RequestAttribute UserId userId) {
         companyService.invalidateCompanies(request, userId);
     }
 
     @BasePageDocumentation
-    @PostMapping(COMPANY_COMPANIES)
+    @GetMapping(COMPANY_COMPANIES)
     public Page<Company> getCompanies(@ApiParam @Valid @Nullable @RequestBody CompaniesRequest request,
                                       @ApiIgnore @PageableDefault Pageable pageable) {
         return companyService.getCompanies(request, pageable);

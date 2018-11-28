@@ -1,4 +1,4 @@
-package com.agh.hydra.core.auth.filter;
+package com.agh.hydra.core.auth.filter.auth;
 
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.core.auth.TokenProvider;

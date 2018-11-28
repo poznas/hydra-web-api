@@ -1,4 +1,4 @@
-package com.agh.hydra.core.auth.filter;
+package com.agh.hydra.core.auth.filter.auth;
 
 import javax.servlet.http.HttpServletResponse;
 

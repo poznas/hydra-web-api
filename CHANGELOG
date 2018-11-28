@@ -1,3 +1,4 @@
+ - #56 add 'X-HTTP-Method-Override' header support
  - #53 change Google API Client IDs
  - fix sonar issues
  - #6 fix postman collection
