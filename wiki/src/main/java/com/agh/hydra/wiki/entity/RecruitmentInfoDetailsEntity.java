@@ -31,7 +31,7 @@ public class RecruitmentInfoDetailsEntity extends RecruitmentInfoEntity {
     private String companyName;
 
     /**
-     * User reliability ratio
+     * Author reliability ratio
      */
-    private Double userReliabilityRatio;
+    private Double authorReliabilityRatio;
 }

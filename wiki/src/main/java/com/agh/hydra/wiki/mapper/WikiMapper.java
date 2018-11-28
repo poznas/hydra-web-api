@@ -36,6 +36,7 @@ public interface WikiMapper extends BaseMapper {
             @Mapping(target = "offset", ignore = true)})
     RecruitmentInfoFilter mapFilterRequest(RecruitmentInformationFilterRequest informationFilterRequest);
 
+    @Mapping(target = "userVote", ignore = true)
     InformationDetails mapInfoDetails(RecruitmentInfoDetailsEntity entity);
 
     default InformationContent mapInfoContent(String content) {

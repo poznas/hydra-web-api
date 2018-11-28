@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 
 import java.util.function.Function;
 
+import static com.agh.hydra.common.util.ObjectUtils.getOrNull;
 import static java.util.Optional.ofNullable;
 
 @UtilityClass
@@ -16,6 +17,6 @@ public class ValueObjectUtil {
     }
 
     public static <T, V extends ValueObject<T>> V valueObject(T value, Function<T, V> mapper){
-        return ofNullable(value).map(mapper).orElse(null);
+        return getOrNull(value, mapper);
     }
 }

@@ -41,8 +41,9 @@ public interface IWikiService {
     /**
      * @param request filter request
      * @param pageable pageable
+     * @param userId viewer user identifier
      * @return filtered, paged and detailed information list
      */
     Page<InformationDetails> getRecruitmentInformation(@Valid RecruitmentInformationFilterRequest request,
-                                                       @NotNull Pageable pageable);
+                                                       @NotNull Pageable pageable, @Valid @NotNull UserId userId);
 }

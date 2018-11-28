@@ -18,12 +18,12 @@ public class InformationDetails extends RecruitmentInformation {
     public InformationDetails(InformationId id, UserId authorId, CompanyId companyId, RecruitmentType recruitmentType,
                               ProgrammingLanguage programmingLanguage, InformationContent content, int upVotes,
                               int downVotes, Username username, String userImageUrl, CompanyName companyName,
-                              Double userReliabilityRatio) {
+                              Double authorReliabilityRatio) {
         super(id, authorId, companyId, recruitmentType, programmingLanguage, content, upVotes, downVotes);
         this.username = username;
         this.userImageUrl = userImageUrl;
         this.companyName = companyName;
-        this.userReliabilityRatio = userReliabilityRatio;
+        this.authorReliabilityRatio = authorReliabilityRatio;
     }
 
     /**
@@ -46,5 +46,10 @@ public class InformationDetails extends RecruitmentInformation {
     /**
      * User reliability ratio
      */
-    private Double userReliabilityRatio;
+    private Double authorReliabilityRatio;
+
+    /**
+     * Current user vote
+     */
+    private Vote userVote;
 }

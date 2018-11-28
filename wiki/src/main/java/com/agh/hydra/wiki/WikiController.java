@@ -64,8 +64,10 @@ public class WikiController {
 
     @BasePageDocumentation
     @GetMapping(WIKI_RECRUITMENT_INFO_ENTRIES)
-    public Page<InformationDetails> getCompanies(@ApiParam @Valid @Nullable @RequestBody RecruitmentInformationFilterRequest request,
+    public Page<InformationDetails> getRecruitmentInformation(@ApiParam @Valid @Nullable @RequestBody
+                                                                          RecruitmentInformationFilterRequest request,
+                                                 @ApiIgnore @RequestAttribute UserId userId,
                                                  @ApiIgnore @PageableDefault Pageable pageable) {
-        return wikiService.getRecruitmentInformation(request, pageable);
+        return wikiService.getRecruitmentInformation(request, pageable, userId);
     }
 }
