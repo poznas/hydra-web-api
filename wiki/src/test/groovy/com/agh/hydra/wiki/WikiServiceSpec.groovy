@@ -5,9 +5,11 @@ import com.agh.hydra.common.model.*
 import com.agh.hydra.wiki.dao.WikiRepository
 import com.agh.hydra.wiki.entity.RecruitmentInfoDetailsEntity
 import com.agh.hydra.wiki.entity.RecruitmentInfoEntity
+import com.agh.hydra.wiki.entity.VoteEntity
 import com.agh.hydra.wiki.impl.WikiService
 import com.agh.hydra.wiki.model.InformationContent
 import com.agh.hydra.wiki.model.RecruitmentInfoFilter
+import com.agh.hydra.wiki.model.Vote
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest
 import com.agh.hydra.wiki.request.RecruitmentInformationFilterRequest
 import org.springframework.data.domain.PageRequest
@@ -75,6 +77,8 @@ class WikiServiceSpec extends Specification {
         and:
         def repoContent = informationEntities(repoSize)
         def repoResult = mockWikiRepository(repoContent, request)
+        def expectedInfoIds = repoResult.collect {it.id}
+        def userVotes = [[informationId : 1L, vote : Vote.DOWN] as VoteEntity] as List
 
         and:
         0 * privilegeService.throwIfUnprivileged(_ as UserId, _ as FunctionalPrivilege)
@@ -88,9 +92,10 @@ class WikiServiceSpec extends Specification {
                 assertRecruitmentInfoFilter(filter, includeIds, companyIds, types, languages, pageable)
                 repoResult.size()
         }
+        1 * wikiRepository.getUserVotes(getValue(testUserId), expectedInfoIds) >> userVotes
 
         when:
-        def result = service.getRecruitmentInformation(request, pageable)
+        def result = service.getRecruitmentInformation(request, pageable, testUserId)
 
         then:
         assert result.number == pageable.getOffset()
@@ -99,6 +104,7 @@ class WikiServiceSpec extends Specification {
         assert result.numberOfElements == expectedIds.size()
         assert result.totalElements == expectedIds.size()
         assert haveSameElements(result.content.collect {getValue(it.id)}, expectedIds)
+        assert result.content.find {it.id.value == 1L}.userVote == Vote.DOWN
 
         where:
         includeIds        | companyIds              | types                | languages      | repoSize || expectedIds
@@ -136,7 +142,7 @@ class WikiServiceSpec extends Specification {
                     content : "Solve for x: x+4=" + it,
                     upVotes : 7,
                     downVotes : 3,
-                    userReliabilityRatio : 0.7,
+                    authorReliabilityRatio : 0.7,
                     recruitmentType : INTERVIEW,
                     programmingLanguage : CPP
             ] as RecruitmentInfoDetailsEntity

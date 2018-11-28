@@ -27,7 +27,13 @@
         <result column="username" property="username"/>
         <result column="imageUrl" property="userImageUrl"/>
         <result column="name" property="companyName"/>
-        <result column="ratio" property="userReliabilityRatio"/>
+        <result column="ratio" property="authorReliabilityRatio"/>
+    </resultMap>
+
+    <resultMap id="VoteResultMap" type="com.agh.hydra.wiki.entity.VoteEntity">
+        <id column="information_id" property="informationId"/>
+        <result column="user_id" property="authorId"/>
+        <result column="vote" property="vote"/>
     </resultMap>
 
     <sql id="selectColumns">
@@ -74,6 +80,15 @@
                             where user_id = #{userId}
                             and information_id = #{informationId});
     </update>
+
+    <select id="getUserVotes" resultMap="VoteResultMap">
+        select information_id, user_id, vote from hydra.INFORMATION_VOTE
+                            where user_id = #{userId}
+                            and information_id in
+        <foreach collection="informationIds" item="informationId" index="index" open="(" separator="," close=")">
+            #{informationId}
+        </foreach>
+    </select>
 
     <select id="getRecruitmentInformation"
             resultMap="InfoDetailsResultMap"

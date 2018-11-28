@@ -6,9 +6,11 @@ import com.agh.hydra.common.model.ValueObject;
 import com.agh.hydra.common.util.PageableUtils;
 import com.agh.hydra.wiki.dao.WikiRepository;
 import com.agh.hydra.wiki.entity.RecruitmentInfoEntity;
+import com.agh.hydra.wiki.entity.VoteEntity;
 import com.agh.hydra.wiki.mapper.WikiMapper;
 import com.agh.hydra.wiki.model.InformationDetails;
 import com.agh.hydra.wiki.model.RecruitmentInfoFilter;
+import com.agh.hydra.wiki.model.Vote;
 import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
 import com.agh.hydra.wiki.request.RecruitmentInformationFilterRequest;
@@ -25,12 +27,15 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_INFORMATION;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_INVALIDATE_RECRUITMENT_INFO;
 import static com.agh.hydra.common.util.CollectionUtils.mapList;
+import static com.agh.hydra.common.util.ObjectUtils.getOrNull;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
-import static java.util.Optional.ofNullable;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Slf4j
 @Service
@@ -66,18 +71,31 @@ public class WikiService implements IWikiService {
 
     @Override
     public Page<InformationDetails> getRecruitmentInformation(@Valid RecruitmentInformationFilterRequest request,
-                                                              @NotNull Pageable pageable) {
+                                                              @NotNull Pageable pageable, @Valid @NotNull UserId userId) {
         RecruitmentInfoFilter filter = WikiMapper.INSTANCE.mapFilterRequest(request);
         PageableUtils.setPageableParams(filter, pageable);
 
         List<InformationDetails> informationDetails =
                 mapList(wikiRepository.getRecruitmentInformation(filter), WikiMapper.INSTANCE::mapInfoDetails);
+
+        decorateUserVotes(informationDetails, userId);
+
         long total = wikiRepository.getInformationCount(filter);
 
         return new PageImpl<>(informationDetails, pageable, total);
     }
 
+    private void decorateUserVotes(@NotNull List<InformationDetails> informationDetails, @NotNull UserId userId) {
+        if(!isEmpty(informationDetails)){
+            List<Long> informationIds = mapList(informationDetails, details -> getValue(details.getId()));
+            Map<Long, Vote> userVotes = wikiRepository.getUserVotes(getValue(userId), informationIds).stream()
+                    .collect(Collectors.toMap(VoteEntity::getInformationId, VoteEntity::getVote));
+
+            informationDetails.forEach(details -> details.setUserVote(userVotes.get(getValue(details.getId()))));
+        }
+    }
+
     private String getVote(@Valid @NotNull VoteRequest request) {
-        return ofNullable(request.getVote()).map(Enum::name).orElse(null);
+        return getOrNull(request.getVote(), Enum::name);
     }
 }
