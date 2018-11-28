@@ -1,4 +1,4 @@
-package com.agh.hydra.core.auth.filter;
+package com.agh.hydra.core.auth.filter.auth;
 
 import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.api.register.service.IPrivilegeService;

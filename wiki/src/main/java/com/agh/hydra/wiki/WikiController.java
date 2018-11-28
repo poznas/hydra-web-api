@@ -49,7 +49,7 @@ public class WikiController {
     }
 
     @BaseDocumentation
-    @PostMapping(WIKI_INVALIDATE_INFO)
+    @PutMapping(WIKI_INVALIDATE_INFO)
     public void invalidateRecruitmentInformation(@Valid @NotNull @RequestBody BaseInformationRequest request,
                                                  @ApiIgnore @RequestAttribute UserId userId) {
         wikiService.invalidateRecruitmentInformation(request, userId);
@@ -57,13 +57,13 @@ public class WikiController {
 
     @BaseDocumentation
     @PostMapping(WIKI_VOTE_INFO)
-    public void invalidateRecruitmentInformation(@Valid @NotNull @RequestBody VoteRequest request,
+    public void voteRecruitmentInformation(@Valid @NotNull @RequestBody VoteRequest request,
                                                  @ApiIgnore @RequestAttribute UserId userId) {
         wikiService.voteRecruitmentInformation(request, userId);
     }
 
     @BasePageDocumentation
-    @PostMapping(WIKI_RECRUITMENT_INFO_ENTRIES)
+    @GetMapping(WIKI_RECRUITMENT_INFO_ENTRIES)
     public Page<InformationDetails> getCompanies(@ApiParam @Valid @Nullable @RequestBody RecruitmentInformationFilterRequest request,
                                                  @ApiIgnore @PageableDefault Pageable pageable) {
         return wikiService.getRecruitmentInformation(request, pageable);

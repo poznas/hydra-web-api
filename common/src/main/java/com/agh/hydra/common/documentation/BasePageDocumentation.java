@@ -32,6 +32,7 @@ import java.lang.annotation.*;
                                 name = "Authorization",
                                 description = "OAuth 2.0 Bearer Token",
                                 response = String.class)}),
+        @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 401, message = "Unauthorized"),
         @ApiResponse(code = 500, message = "Server error")
 }

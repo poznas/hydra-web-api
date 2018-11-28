@@ -1,12 +1,15 @@
 package com.agh.hydra.config;
 
-import com.agh.hydra.core.auth.filter.BearerFilter;
-import com.agh.hydra.core.auth.filter.LoginFilter;
+import com.agh.hydra.core.auth.filter.HttpMethodOverrideHeaderFilter;
+import com.agh.hydra.core.auth.filter.auth.BearerFilter;
+import com.agh.hydra.core.auth.filter.auth.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+import java.util.Collection;
 import java.util.List;
 
 @Configuration
@@ -15,21 +18,28 @@ public class SecurityConfig {
 
     private final LoginFilter loginFilter;
     private final BearerFilter bearerFilter;
+    private final HttpMethodOverrideHeaderFilter headerFilter;
 
     @Bean
     public FilterRegistrationBean loginRegistrationBean() {
-        FilterRegistrationBean<LoginFilter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(loginFilter);
-        filterRegistrationBean.setUrlPatterns(List.of("/auth/login/*"));
-        return filterRegistrationBean;
+        return registerFilter(loginFilter, List.of("/auth/login/*"));
     }
 
     @Bean
     public FilterRegistrationBean bearerRegistrationBean() {
-        FilterRegistrationBean<BearerFilter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(bearerFilter);
-        filterRegistrationBean.setUrlPatterns(List.of("/*"));
         bearerFilter.setPublicResourcePaths(List.of("/auth/login", "/v2/api-docs"));
+        return registerFilter(bearerFilter, List.of("/*"));
+    }
+
+    @Bean
+    public FilterRegistrationBean methodOverrideHeaderFilter() {
+        return registerFilter(headerFilter, List.of("/*"));
+    }
+
+    private <F extends Filter> FilterRegistrationBean<F> registerFilter(F filter, Collection<String> urlPatterns) {
+        FilterRegistrationBean<F> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(filter);
+        filterRegistrationBean.setUrlPatterns(urlPatterns);
         return filterRegistrationBean;
     }
 }
