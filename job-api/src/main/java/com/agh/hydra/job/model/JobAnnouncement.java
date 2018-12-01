@@ -1,9 +1,7 @@
-package com.agh.hydra.job.request;
+package com.agh.hydra.job.model;
 
-import com.agh.hydra.common.model.CompanyId;
-import com.agh.hydra.common.model.InformationContent;
-import com.agh.hydra.common.model.ProgrammingLanguage;
-import com.agh.hydra.job.model.JobTitle;
+import com.agh.hydra.common.model.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -17,7 +15,14 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateJobAnnouncementRequest {
+public class JobAnnouncement {
+
+    /**
+     * Database identifier
+     */
+    @Valid
+    @NotNull
+    private JobId jobId;
 
     /**
      * Job title
@@ -32,6 +37,12 @@ public class CreateJobAnnouncementRequest {
     @Valid
     @NotNull
     private CompanyId companyId;
+
+    /**
+     * Company name
+     */
+    @Valid
+    private CompanyName companyName;
 
     /**
      * City
@@ -66,5 +77,6 @@ public class CreateJobAnnouncementRequest {
     /**
      * Closing date
      */
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Instant closingDate;
 }

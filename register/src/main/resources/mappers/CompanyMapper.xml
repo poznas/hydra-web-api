@@ -33,7 +33,7 @@
         <include refid="selectColumns"/>
         from hydra.company
           where active = 'Y'
-        <if test="companyIds != null">
+        <if test="companyIds != null and !companyIds.isEmpty()">
              and company_id in
             <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
                 #{companyId}
@@ -46,7 +46,7 @@
     <select id="getCompaniesCount" resultType="long">
         select count(*) from hydra.company
           where active = 'Y'
-        <if test="companyIds != null">
+        <if test="companyIds != null and !companyIds.isEmpty()">
             and company_id in
             <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
                 #{companyId}

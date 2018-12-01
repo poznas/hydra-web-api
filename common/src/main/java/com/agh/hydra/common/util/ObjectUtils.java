@@ -10,6 +10,10 @@ import static java.util.Optional.ofNullable;
 public class ObjectUtils {
 
     public static <T, E> E getOrNull(T source, Function<T, E> mapper) {
-        return ofNullable(source).map(mapper).orElse(null);
+        return getOrDefault(source, mapper, null);
+    }
+
+    public static <T, E> E getOrDefault(T source, Function<T, E> mapper, E other) {
+        return ofNullable(source).map(mapper).orElse(other);
     }
 }
