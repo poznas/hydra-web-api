@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Setter
@@ -19,5 +20,6 @@ public class CompaniesRequest {
      * Company identifiers
      */
     @Valid
+    @Size(min = 1)
     private Set<CompanyId> companyIds;
 }

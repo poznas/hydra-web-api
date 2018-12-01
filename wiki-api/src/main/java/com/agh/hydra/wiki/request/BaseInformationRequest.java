@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Setter
@@ -20,6 +20,6 @@ public class BaseInformationRequest {
      * Recruitment information entry identifiers
      */
     @Valid
-    @NotNull
+    @Size(min = 1)
     private Set<InformationId> ids;
 }

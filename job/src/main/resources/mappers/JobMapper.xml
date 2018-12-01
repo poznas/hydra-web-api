@@ -36,6 +36,15 @@
               select  #{companyId}, #{description}, #{city}, #{title}, #{programmingLanguages}, #{minSalary}, #{maxSalary}, #{closingDate};
      </insert>
 
+    <update id="invalidateJobAnnouncement" parameterType="long">
+        update hydra.JOB_ANNOUNCEMENT set
+        active = 'N'
+        where id in
+        <foreach collection="ids" item="jobId" index="index" open="(" separator="," close=")">
+            #{jobId}
+        </foreach>
+    </update>
+
     <select id="getJobAnnouncements"
             resultMap="JobAnnouncementMap"
             parameterType="com.agh.hydra.job.model.JobAnnouncementFilter">
