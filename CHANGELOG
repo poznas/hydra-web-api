@@ -1,3 +1,4 @@
+ - update postman collection
  - #59 fix NPE when no RQ body, /recruitment/info/entries
  - #51 add 'userVote' field to wiki info items, GET /recruitment/info/entries
  - #56 add 'X-HTTP-Method-Override' header support

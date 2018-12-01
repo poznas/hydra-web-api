@@ -10,8 +10,11 @@
 			"item": [
 				{
 					"name": "/login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -19,8 +22,14 @@
 							},
 							{
 								"key": "X-ID-TOKEN",
-								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhNDM2YzNmNjNiMjgxY2UwZDk3NmRhMGI1MWEzNDg2MGZmOTYwZWIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNzEyMzYzMTIyNzA2LXM2ZWxtYzRnaHFkYnE5czR1YXJtOGRzb2k5ODBvbGZtLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNzEyMzYzMTIyNzA2LXM2ZWxtYzRnaHFkYnE5czR1YXJtOGRzb2k5ODBvbGZtLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA1NDE1MTI5NjI0NDQ0Mjk2MTAxIiwiZW1haWwiOiJtaXN0ZXJkYW5ueXBsQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiTmtDMEplMHZ5S05PdVVWX2I0QVl4USIsIm5hbWUiOiJEYW5pZWwgUG96bmHFhHNraSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLW42b2pzdF9rWDE0L0FBQUFBQUFBQUFJL0FBQUFBQUFBR19ZLzhPZThaYmVqQXhJL3M5Ni1jL3Bob3RvLmpwZyIsImdpdmVuX25hbWUiOiJEYW5pZWwiLCJmYW1pbHlfbmFtZSI6IlBvem5hxYRza2kiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTU0MTI0NzU4MywiZXhwIjoxNTQxMjUxMTgzLCJqdGkiOiI5MzEwNmFhNjQ0YTA3ZTcxNTI4ZGMwOThmNDk4NGFiMTMxMTI1ZTUyIn0.BhnvrlKZ0FwjEyoFJDpF6RidLGoXifz7W-HsmR0964fAt76UbbyzR0Jstpz9_GFSFMQVmoRbMZSZg8JebV0WRr0zDni941Gp_V9kYfVX5Djx4ndH7KaHj93oDyAGQCUoeYoCHONxNKr8AyNNgIMxFI2aGE-hx2LRouSE6epreRP7zWOizlIgX4ecyJg-gmXGe55DVa7ELVhkx-My4R8Dixfr4TKaphHa6zfdRGM8FrIce9mSB_mbLu50QJZuYdb4BRMfW-6vQs2Wvq4W-qFF7MzpD23OVasKqvyhPE9jIxldWttBl6zsKQVmrpTapEEiCcasq4ZUbYCdkUPK41Oy4g",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ2lNDgwYzNjNTgzOWJiYjE1ODYxZTA4YzMyZDE4N2ZhZjlhNTYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIyNDc0NzM4NjEyMjEta2lnbjBlZjVsdTJwODUwN29yNmwwazloNzZiNXNwZDYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIyNDc0NzM4NjEyMjEta2lnbjBlZjVsdTJwODUwN29yNmwwazloNzZiNXNwZDYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDQ5NzA3MTQ5OTYzMDg5OTU3ODQiLCJlbWFpbCI6InRhbHZpc290YTIyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiamhpYjktSXlNcF9UWmRPUUwxb1FLZyIsIm5vbmNlIjoiWXJJajVaQVVlQ080bG96ZmgtVEExXzhQMXdQcHY3STdEU0IwZnRVM2p4MCIsIm5hbWUiOiJNaWNoYcWCIER6aWVkemljIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS8tOE9lNEcxSFR6bTAvQUFBQUFBQUFBQUkvQUFBQUFBQUFBQUEvQUdEZ3ctaUd6SzZSbWxHNENBZUdNUThBMlRKMzVSS0pQQS9zOTYtYy9waG90by5qcGciLCJnaXZlbl9uYW1lIjoiTWljaGHFgiIsImZhbWlseV9uYW1lIjoiRHppZWR6aWMiLCJsb2NhbGUiOiJwbCIsImlhdCI6MTU0MzI2NTkzNCwiZXhwIjoxNTQzMjY5NTM0fQ.EavZT9u1gODj4zLZkATFc3XJa514KvIyr2JdioR8TH2lwN2sPW8p-49OFPSN5wWFJfQedin6FFpyssTAhF4LRUXyLCUaHxY-XLiW6zvi8UwZ68oz9qATwY82YnKMQ-AHcc-GjoUNAAAjkVM91nLc5ABSMlp1ecd-P9scLzxxtN9_63VWHC_kd8233LFVpdTuRtdvGTh2Wg7x_ooz7N85hl8Lpn_Vp866uR-P2Vi6JkFTqbGlC8yM61GHCPN2lu5Uv-1rwB-_QjL2aUBUX-DLhSdbU_KHLZdX_2g6-KgqOYyO6giufAMPc5-4u_v2g4GfjEqGocgyq8eDM0cHimpdhA",
 								"type": "text"
+							},
+							{
+								"key": "X-HTTP-Method-Override",
+								"value": "GET",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -44,7 +53,7 @@
 				{
 					"name": "Update Company",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -160,7 +169,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"userId\" : \"105415129624444296101\",\n\t\"privileges\" : [\n    \"FN_PRV_EDIT_PRIVILEGES\",\n    \"FN_PRV_INVALIDATE_COMPANIES\",\n    \"FN_PRV_EDIT_COMPANIES\"\n]\n}"
+							"raw": "{\n\t\"userId\" : \"105415129624444296101\",\n\t\"privileges\" : [\n    \"FN_PRV_EDIT_PRIVILEGES\",\n    \"FN_PRV_INVALIDATE_COMPANIES\",\n    \"FN_PRV_EDIT_COMPANIES\",\n    \"FN_PRV_CREATE_INFORMATION\",\n    \"FN_PRV_INVALIDATE_RECRUITMENT_INFO\"\n]\n}"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/auth/privileges/add",
@@ -180,7 +189,7 @@
 				{
 					"name": "remove Privileges",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -214,7 +223,7 @@
 				{
 					"name": "InvalidateCompany",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -247,8 +256,11 @@
 				},
 				{
 					"name": "get Companies",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -262,12 +274,13 @@
 							{
 								"key": "X-HTTP-Method-Override",
 								"value": "GET",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n      \"companyIds\" : [\r\n      \t\"openx\", \"sabre\", \"wixapol\"\r\n      \t]\r\n    }"
+							"raw": "{\r\n     \r\n    }"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/register/company/companies?page=0&size=10",
@@ -288,6 +301,11 @@
 								{
 									"key": "size",
 									"value": "10"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
@@ -316,7 +334,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n      \"companyId\" : \"schibsted\",\r\n      \"recruitmentType\" : \"TEST\",\r\n      \"content\" : \"Whas is the output of following command? : print('chuj');\",\r\n      \"programmingLanguage\" : \"PYTHON\"\r\n    }"
+							"raw": "{\r\n      \"companyId\" : \"schibsted\",\r\n      \"recruitmentType\" : \"TEST\",\r\n      \"content\" : \"Distinguish between malloc() & calloc() memory allocation.\",\r\n      \"programmingLanguage\" : \"C\"\r\n    }"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/add",
@@ -337,7 +355,7 @@
 				{
 					"name": "invalidate recruitment info",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -347,6 +365,12 @@
 								"key": "Authorization",
 								"value": "{{BEARER}}",
 								"type": "text"
+							},
+							{
+								"key": "X-HTTP-Method-Override",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -371,8 +395,11 @@
 				},
 				{
 					"name": "get recruitment infos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -382,11 +409,17 @@
 								"key": "Authorization",
 								"type": "text",
 								"value": "{{BEARER}}"
+							},
+							{
+								"key": "X-HTTP-Method-Override",
+								"value": "GET",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n      \"includeIds\" : [3,5,2,1],\n      \"companyIds\" : [\"ailleron\", \"sabre\"]\n    }"
+							"raw": "{\n\t\"companyIds\" : [\"schibsted\"]\n}"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/entries",
