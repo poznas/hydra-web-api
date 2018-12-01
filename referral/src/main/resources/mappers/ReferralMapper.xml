@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agh.hydra.referral.dao.ReferralRepository">
+
+
+    <insert id="createReferralAnnouncement" parameterType="com.agh.hydra.referral.entity.ReferralEntity">
+       insert into hydra.REFERRAL_ANNOUNCEMENT
+              (author_id, job_id, description, referral_bonus, referral_bonus_percentage, closing_date)
+              select  #{authorId}, #{jobId}, #{description}, #{referralBonus}, #{referralBonusPercentage}, #{closingDate};
+     </insert>
+
+    <select id="referralAnnouncementExists" resultType="boolean">
+        select exists (
+          select 1 from hydra.REFERRAL_ANNOUNCEMENT
+            where author_id = #{authorId}
+            and job_id = #{jobId}
+            and active = 'Y'
+            and closing_date > CURRENT_TIMESTAMP
+        )
+    </select>
+
+</mapper>

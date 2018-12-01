@@ -1,6 +1,6 @@
 package com.agh.hydra.wiki.mapper;
 
-import com.agh.hydra.common.BaseMapper;
+import com.agh.hydra.common.mapper.BaseMapper;
 import com.agh.hydra.common.model.InformationId;
 import com.agh.hydra.wiki.entity.RecruitmentInfoDetailsEntity;
 import com.agh.hydra.wiki.entity.RecruitmentInfoEntity;

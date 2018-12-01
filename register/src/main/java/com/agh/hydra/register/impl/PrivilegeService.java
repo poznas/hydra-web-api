@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.agh.hydra.common.exception.BusinessException.UNPRIVILEGED;
-import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_INFORMATION;
-import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_EDIT_PRIVILEGES;
+import static com.agh.hydra.common.model.FunctionalPrivilege.*;
 import static com.agh.hydra.common.util.CollectionUtils.asSet;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 
@@ -27,7 +26,8 @@ import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 @RequiredArgsConstructor
 public class PrivilegeService implements IPrivilegeService {
 
-    private static final Set<FunctionalPrivilege> DEFAULT_FN_PRIVILEGES = asSet(FN_PRV_CREATE_INFORMATION);
+    private static final Set<FunctionalPrivilege> DEFAULT_FN_PRIVILEGES =
+            asSet(FN_PRV_CREATE_INFORMATION, FN_PRV_EDIT_JOBS, FN_PRV_CREATE_REFERRAL);
 
     private final PrivilegeRepository privilegeRepository;
 
@@ -45,7 +45,7 @@ public class PrivilegeService implements IPrivilegeService {
 
     @Override
     public void throwIfUnprivileged(@Valid @NotNull UserId userId, @NotNull FunctionalPrivilege privilege) {
-        if(!hasPrivilege(userId, privilege)){
+        if (!hasPrivilege(userId, privilege)) {
             throw UNPRIVILEGED.getException();
         }
     }
