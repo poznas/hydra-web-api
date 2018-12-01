@@ -7,7 +7,6 @@ import com.agh.hydra.wiki.entity.RecruitmentInfoDetailsEntity
 import com.agh.hydra.wiki.entity.RecruitmentInfoEntity
 import com.agh.hydra.wiki.entity.VoteEntity
 import com.agh.hydra.wiki.impl.WikiService
-import com.agh.hydra.wiki.model.InformationContent
 import com.agh.hydra.wiki.model.RecruitmentInfoFilter
 import com.agh.hydra.wiki.model.Vote
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest

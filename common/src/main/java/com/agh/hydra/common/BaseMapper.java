@@ -1,9 +1,6 @@
 package com.agh.hydra.common;
 
-import com.agh.hydra.common.model.CompanyId;
-import com.agh.hydra.common.model.CompanyName;
-import com.agh.hydra.common.model.UserId;
-import com.agh.hydra.common.model.Username;
+import com.agh.hydra.common.model.*;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.ReportingPolicy;
 
@@ -45,4 +42,11 @@ public interface BaseMapper {
         return getValue(id);
     }
 
+    default InformationContent mapInfoContent(String content) {
+        return valueObject(content, InformationContent::of);
+    }
+
+    default String mapInfoContent(InformationContent content) {
+        return getValue(content);
+    }
 }

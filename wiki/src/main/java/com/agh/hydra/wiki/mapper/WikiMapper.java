@@ -4,7 +4,6 @@ import com.agh.hydra.common.BaseMapper;
 import com.agh.hydra.common.model.InformationId;
 import com.agh.hydra.wiki.entity.RecruitmentInfoDetailsEntity;
 import com.agh.hydra.wiki.entity.RecruitmentInfoEntity;
-import com.agh.hydra.wiki.model.InformationContent;
 import com.agh.hydra.wiki.model.InformationDetails;
 import com.agh.hydra.wiki.model.RecruitmentInfoFilter;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
@@ -38,14 +37,6 @@ public interface WikiMapper extends BaseMapper {
 
     @Mapping(target = "userVote", ignore = true)
     InformationDetails mapInfoDetails(RecruitmentInfoDetailsEntity entity);
-
-    default InformationContent mapInfoContent(String content) {
-        return valueObject(content, InformationContent::of);
-    }
-
-    default String mapInfoContent(InformationContent content) {
-        return getValue(content);
-    }
 
     default InformationId mapInfoId(Long id) {
         return valueObject(id, InformationId::of);
