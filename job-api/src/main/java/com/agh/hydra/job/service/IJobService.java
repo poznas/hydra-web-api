@@ -4,6 +4,7 @@ import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.job.model.JobAnnouncement;
 import com.agh.hydra.job.request.CreateJobAnnouncementRequest;
 import com.agh.hydra.job.request.JobAnnouncementFilterRequest;
+import com.agh.hydra.job.request.JobAnnouncementRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +27,12 @@ public interface IJobService {
      * @return filtered, paged and detailed job announcement list
      */
     Page<JobAnnouncement> getJobAnnouncements(@Valid JobAnnouncementFilterRequest request, @NotNull Pageable pageable);
+
+    /**
+     * Disables job announcement entry
+     *
+     * @param request request with job announcement identifiers
+     * @param userId  user identifier
+     */
+    void invalidateJobAnnouncement(@Valid @NotNull JobAnnouncementRequest request, @Valid @NotNull UserId userId);
 }

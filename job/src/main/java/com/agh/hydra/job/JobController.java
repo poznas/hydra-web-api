@@ -6,6 +6,7 @@ import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.job.model.JobAnnouncement;
 import com.agh.hydra.job.request.CreateJobAnnouncementRequest;
 import com.agh.hydra.job.request.JobAnnouncementFilterRequest;
+import com.agh.hydra.job.request.JobAnnouncementRequest;
 import com.agh.hydra.job.service.IJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class JobController {
     static final String JOB_CONTEXT = "/job";
     private static final String JOB_CREATE_ANNOUNCEMENT = "/add";
     private static final String JOB_ANNOUNCEMENTS = "/jobs";
+    private static final String JOB_ANNOUNCEMENT_INVALIDATE = "/invalidate";
 
     private final IJobService jobService;
 
@@ -47,5 +49,12 @@ public class JobController {
     public Page<JobAnnouncement> getJobAnnouncements(@Valid @Nullable @RequestBody JobAnnouncementFilterRequest request,
                                                      @ApiIgnore @PageableDefault Pageable pageable) {
         return jobService.getJobAnnouncements(request, pageable);
+    }
+
+    @BaseDocumentation
+    @PutMapping(JOB_ANNOUNCEMENT_INVALIDATE)
+    public void invalidateJobAnnouncement(@Valid @NotNull @RequestBody JobAnnouncementRequest request,
+                                          @ApiIgnore @RequestAttribute UserId userId) {
+        jobService.invalidateJobAnnouncement(request, userId);
     }
 }
