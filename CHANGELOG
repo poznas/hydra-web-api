@@ -1,3 +1,4 @@
+ - #52 impl for service : GET /job/jobs
  - #61 impl for service : POST /job/add
  - update postman collection
  - #59 fix NPE when no RQ body, /recruitment/info/entries

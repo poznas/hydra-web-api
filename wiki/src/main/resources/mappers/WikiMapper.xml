@@ -130,7 +130,7 @@
 
     <sql id="filterCriteria" >
         <where>
-            null is null
+            i.active = 'Y'
             <include refid="informationIdFilter"/>
             <include refid="companyIdFilter"/>
             <include refid="recruitmentTypeFilter"/>
@@ -139,7 +139,7 @@
     </sql>
 
     <sql id="informationIdFilter">
-        <if test="includeIds != null">
+        <if test="includeIds != null and !includeIds.isEmpty()">
             and i.id in
             <foreach collection="includeIds" item="informationId" index="index" open="(" separator="," close=")">
                 #{informationId}
@@ -148,7 +148,7 @@
     </sql>
 
     <sql id="companyIdFilter">
-        <if test="companyIds != null">
+        <if test="companyIds != null and !companyIds.isEmpty()">
             and i.company_id in
             <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
                 #{companyId}
@@ -157,7 +157,7 @@
     </sql>
 
     <sql id="recruitmentTypeFilter">
-        <if test="types != null">
+        <if test="types != null and !types.isEmpty()">
             and i.recruitmentType in
             <foreach collection="types" item="type" index="index" open="(" separator="," close=")">
                 #{type}
@@ -166,7 +166,7 @@
     </sql>
 
     <sql id="programmingLanguageFilter">
-        <if test="languages != null">
+        <if test="languages != null and !languages.isEmpty()">
             and i.programmingLanguage in
             <foreach collection="languages" item="language" index="index" open="(" separator="," close=")">
                 #{language}

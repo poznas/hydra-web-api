@@ -3,8 +3,11 @@
 <mapper namespace="com.agh.hydra.job.dao.JobRepository">
 
     <resultMap id="JobAnnouncementMap" type="com.agh.hydra.job.entity.JobEntity">
-        <id column="id" property="id"/>
+        <id column="id" property="jobId"/>
         <result column="company_id" property="companyId"/>
+        <result column="company_name" property="companyName"/>
+        <result column="city" property="city"/>
+        <result column="title" property="title"/>
         <result column="description" property="description"/>
         <result column="programming_languages" property="programmingLanguages"/>
         <result column="salary_min" property="minSalary"/>
@@ -13,10 +16,90 @@
         <result column="active" property="active"/>
     </resultMap>
 
+    <sql id="selectColumns">
+        a.id,
+        a.company_id,
+        c.name as company_name,
+        a.title,
+        a.city,
+        a.description,
+        a.programming_languages,
+        a.salary_min,
+        a.salary_max,
+        a.closing_date,
+        case when a.active = 'Y' then 1 else 0 end as active
+    </sql>
+
     <insert id="createJobAnnouncement" parameterType="com.agh.hydra.job.entity.JobEntity">
        insert into hydra.JOB_ANNOUNCEMENT
-              (company_id, description, programming_languages, salary_min, salary_max, closing_date)
-              select  #{companyId}, #{description}, #{programmingLanguages}, #{minSalary}, #{maxSalary}, #{closingDate};
+              (company_id, description, city, title, programming_languages, salary_min, salary_max, closing_date)
+              select  #{companyId}, #{description}, #{city}, #{title}, #{programmingLanguages}, #{minSalary}, #{maxSalary}, #{closingDate};
      </insert>
+
+    <select id="getJobAnnouncements"
+            resultMap="JobAnnouncementMap"
+            parameterType="com.agh.hydra.job.model.JobAnnouncementFilter">
+        select
+        <include refid="selectColumns"/>
+        from hydra.JOB_ANNOUNCEMENT a
+        left join hydra.COMPANY c on a.company_id = c.company_id
+        <include refid="filterCriteria"/>
+        order by a.closing_date
+    </select>
+
+    <select id="getJobAnnouncementCount"
+            resultType="long"
+            parameterType="com.agh.hydra.job.model.JobAnnouncementFilter">
+        select count(*) from hydra.JOB_ANNOUNCEMENT a
+        <include refid="filterCriteria"/>
+    </select>
+
+
+    <sql id="filterCriteria">
+        <where>
+            a.active = 'Y'
+            and a.closing_date > CURRENT_TIMESTAMP
+            <include refid="companyIdFilter"/>
+            <include refid="jobIdFilter"/>
+            <include refid="programmingLanguageFilter"/>
+            <include refid="cityFilter"/>
+        </where>
+    </sql>
+
+    <sql id="jobIdFilter">
+        <if test="includeIds != null and !includeIds.isEmpty()">
+            and a.id in
+            <foreach collection="includeIds" item="jobId" index="index" open="(" separator="," close=")">
+                #{jobId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="companyIdFilter">
+        <if test="companyIds != null and !companyIds.isEmpty()">
+            and a.company_id in
+            <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+                #{companyId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="programmingLanguageFilter">
+        <if test="languages != null and !languages.isEmpty()">
+            and
+            <foreach collection="languages" item="language" index="index" open="(" separator=" or " close=")">
+                a.programming_languages like ('%' || #{language} || '%')
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="cityFilter">
+        <if test="cities != null and !cities.isEmpty()">
+            and a.city in
+            <foreach collection="cities" item="city" index="index" open="(" separator="," close=")">
+                #{city}
+            </foreach>
+        </if>
+    </sql>
 
 </mapper>

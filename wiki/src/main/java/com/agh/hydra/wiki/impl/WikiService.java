@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_INFORMATION;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_INVALIDATE_RECRUITMENT_INFO;
 import static com.agh.hydra.common.util.CollectionUtils.mapList;
+import static com.agh.hydra.common.util.ObjectUtils.getOrDefault;
 import static com.agh.hydra.common.util.ObjectUtils.getOrNull;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
-import static java.util.Optional.ofNullable;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Slf4j
@@ -73,8 +73,9 @@ public class WikiService implements IWikiService {
     @Override
     public Page<InformationDetails> getRecruitmentInformation(@Valid RecruitmentInformationFilterRequest request,
                                                               @NotNull Pageable pageable, @Valid @NotNull UserId userId) {
-        RecruitmentInfoFilter filter = ofNullable(WikiMapper.INSTANCE.mapFilterRequest(request))
-                .orElse(new RecruitmentInfoFilter());
+        RecruitmentInfoFilter filter = getOrDefault(request,
+                WikiMapper.INSTANCE::mapFilterRequest, new RecruitmentInfoFilter());
+
         PageableUtils.setPageableParams(filter, pageable);
 
         List<InformationDetails> informationDetails =

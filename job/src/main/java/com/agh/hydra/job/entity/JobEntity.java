@@ -16,12 +16,27 @@ public class JobEntity {
     /**
      * Database identifier
      */
-    private Long id;
+    private Long jobId;
+
+    /**
+     * Job title
+     */
+    private String title;
 
     /**
      * Company identifier
      */
     private String companyId;
+
+    /**
+     * Company name
+     */
+    private String companyName;
+
+    /**
+     * City
+     */
+    private String city;
 
     /**
      * Job description
