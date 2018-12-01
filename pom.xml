@@ -20,7 +20,9 @@
 		<module>wiki-api</module>
 		<module>register</module>
 		<module>register-api</module>
-    </modules>
+        <module>job</module>
+		<module>job-api</module>
+	</modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

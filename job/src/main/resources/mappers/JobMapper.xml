@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agh.hydra.job.dao.JobRepository">
+
+    <resultMap id="JobAnnouncementMap" type="com.agh.hydra.job.entity.JobEntity">
+        <id column="id" property="id"/>
+        <result column="company_id" property="companyId"/>
+        <result column="description" property="description"/>
+        <result column="programming_languages" property="programmingLanguages"/>
+        <result column="salary_min" property="minSalary"/>
+        <result column="salary_max" property="maxSalary"/>
+        <result column="closing_date" property="closingDate"/>
+        <result column="active" property="active"/>
+    </resultMap>
+
+    <insert id="createJobAnnouncement" parameterType="com.agh.hydra.job.entity.JobEntity">
+       insert into hydra.JOB_ANNOUNCEMENT
+              (company_id, description, programming_languages, salary_min, salary_max, closing_date)
+              select  #{companyId}, #{description}, #{programmingLanguages}, #{minSalary}, #{maxSalary}, #{closingDate};
+     </insert>
+
+</mapper>

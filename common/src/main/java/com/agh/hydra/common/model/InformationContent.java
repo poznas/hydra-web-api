@@ -1,6 +1,5 @@
-package com.agh.hydra.wiki.model;
+package com.agh.hydra.common.model;
 
-import com.agh.hydra.common.model.ValueObject;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
