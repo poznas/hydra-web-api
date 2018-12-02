@@ -30,6 +30,7 @@ public class CollectionUtils {
          return nonNull(a) && nonNull(b) && a.size() == b.size() && a.containsAll(b) && b.containsAll(a);
     }
 
+    @SafeVarargs
     public static <T> Set<T> asSet(T... array) {
          return ofNullable(array).map(Stream::of).map(stream -> stream.collect(toSet())).orElse(emptySet());
     }

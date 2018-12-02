@@ -3,7 +3,7 @@ package com.agh.hydra.register.mapper;
 import com.agh.hydra.api.register.model.Company;
 import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.api.register.request.CreateCompanyRequest;
-import com.agh.hydra.common.BaseMapper;
+import com.agh.hydra.common.mapper.BaseMapper;
 import com.agh.hydra.common.model.Language;
 import com.agh.hydra.register.entity.CompanyEntity;
 import com.agh.hydra.register.entity.UserEntity;

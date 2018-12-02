@@ -38,6 +38,11 @@
         </dependency>
         <dependency>
             <groupId>com.agh</groupId>
+            <artifactId>hydra-referral</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.agh</groupId>
             <artifactId>hydra-register</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -1,4 +1,4 @@
-package com.agh.hydra.common;
+package com.agh.hydra.common.mapper;
 
 import com.agh.hydra.common.model.*;
 import org.mapstruct.MapperConfig;
@@ -48,5 +48,21 @@ public interface BaseMapper {
 
     default String mapInfoContent(InformationContent content) {
         return getValue(content);
+    }
+
+    default JobId mapId(Long id) {
+        return valueObject(id, JobId::of);
+    }
+
+    default Long mapId(JobId id) {
+        return getValue(id);
+    }
+
+    default JobTitle mapTitle(String title) {
+        return valueObject(title, JobTitle::of);
+    }
+
+    default String mapTitle(JobTitle title) {
+        return getValue(title);
     }
 }

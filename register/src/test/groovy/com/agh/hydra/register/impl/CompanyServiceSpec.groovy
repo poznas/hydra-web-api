@@ -9,6 +9,7 @@ import com.agh.hydra.common.model.*
 import com.agh.hydra.register.dao.CompanyRepository
 import com.agh.hydra.register.entity.CompanyEntity
 import org.springframework.data.domain.PageRequest
+import org.springframework.web.server.ResponseStatusException
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -21,6 +22,7 @@ import static com.agh.hydra.common.util.ValueObjectUtil.getValue
 import static java.util.Arrays.asList
 import static java.util.Collections.emptyList
 import static java.util.Collections.singletonList
+import static org.springframework.http.HttpStatus.BAD_REQUEST
 
 class CompanyServiceSpec extends Specification {
 
@@ -117,11 +119,12 @@ class CompanyServiceSpec extends Specification {
         service.invalidateCompanies(request, testUserId)
 
         then:
-        def exception = thrown(RuntimeException.class)
-        assert exception.message == expectedMessage
+        def exception = thrown(ResponseStatusException.class)
+        assert exception.status == BAD_REQUEST
+        assert exception.reason == expectedReason
 
         where:
-        requestedIds             || expectedMessage
+        requestedIds             || expectedReason
         asList("c1", "c4")       || "Company 'c4' does not exist"
         asList("c1", "c2", "h2") || "Company 'h2' does not exist"
         singletonList("c6")      || "Company 'c6' does not exist"

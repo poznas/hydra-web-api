@@ -49,11 +49,13 @@
             resultMap="JobAnnouncementMap"
             parameterType="com.agh.hydra.job.model.JobAnnouncementFilter">
         select
-        <include refid="selectColumns"/>
-        from hydra.JOB_ANNOUNCEMENT a
-        left join hydra.COMPANY c on a.company_id = c.company_id
-        <include refid="filterCriteria"/>
+            <include refid="selectColumns"/>
+            from hydra.JOB_ANNOUNCEMENT a
+              left join hydra.COMPANY c on a.company_id = c.company_id
+            <include refid="filterCriteria"/>
         order by a.closing_date
+        offset #{offset}
+        limit #{pageSize}
     </select>
 
     <select id="getJobAnnouncementCount"

@@ -9,12 +9,14 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public enum BusinessException {
 
-    UNPRIVILEGED(exception("User is not privileged to perform this action")),
-    INVALID_TOKEN(exception("Invalid ID token"));
+    INVALID_TOKEN("Invalid ID token"),
+    UNPRIVILEGED("User is not privileged to perform this action"),
+    INVALID_REFERRAL_CLOSING_DATE("Referral announcement closing date cannot be ahead of job closing date"),
+    ACTIVE_REFERRAL_EXISTS("User has active referral announcement referencing that job");
 
-    private final ResponseStatusException exception;
+    private final String message;
 
-    private static ResponseStatusException exception(String message) {
+    public ResponseStatusException getException() {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
     }
 }

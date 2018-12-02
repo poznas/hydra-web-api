@@ -2,8 +2,8 @@ package com.agh.hydra.job.request;
 
 import com.agh.hydra.common.model.CompanyId;
 import com.agh.hydra.common.model.InformationContent;
+import com.agh.hydra.common.model.JobTitle;
 import com.agh.hydra.common.model.ProgrammingLanguage;
-import com.agh.hydra.job.model.JobTitle;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -66,5 +66,6 @@ public class CreateJobAnnouncementRequest {
     /**
      * Closing date
      */
+    @NotNull
     private Instant closingDate;
 }

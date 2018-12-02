@@ -3,16 +3,14 @@ package com.agh.hydra.job.request;
 import com.agh.hydra.common.model.CompanyId;
 import com.agh.hydra.common.model.JobId;
 import com.agh.hydra.common.model.ProgrammingLanguage;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.Valid;
 import java.util.Set;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobAnnouncementFilterRequest {
