@@ -19,4 +19,13 @@
         )
     </select>
 
+    <update id="invalidateReferralAnnouncement" parameterType="long">
+        update hydra.REFERRAL_ANNOUNCEMENT set
+        active = 'N'
+        where id in
+        <foreach collection="ids" item="referralId" index="index" open="(" separator="," close=")">
+            #{referralId}
+        </foreach>
+    </update>
+
 </mapper>

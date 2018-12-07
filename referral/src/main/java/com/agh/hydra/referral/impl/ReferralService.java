@@ -3,6 +3,7 @@ package com.agh.hydra.referral.impl;
 import com.agh.hydra.api.register.service.IPrivilegeService;
 import com.agh.hydra.common.model.JobId;
 import com.agh.hydra.common.model.UserId;
+import com.agh.hydra.common.model.ValueObject;
 import com.agh.hydra.job.model.JobAnnouncement;
 import com.agh.hydra.job.request.JobAnnouncementFilterRequest;
 import com.agh.hydra.job.service.IJobService;
@@ -10,6 +11,7 @@ import com.agh.hydra.referral.dao.ReferralRepository;
 import com.agh.hydra.referral.entity.ReferralEntity;
 import com.agh.hydra.referral.mapper.ReferralMapper;
 import com.agh.hydra.referral.request.CreateReferralRequest;
+import com.agh.hydra.referral.request.ReferralAnnouncementRequest;
 import com.agh.hydra.referral.service.IReferralService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,8 @@ import static com.agh.hydra.common.exception.BusinessException.ACTIVE_REFERRAL_E
 import static com.agh.hydra.common.exception.BusinessException.INVALID_REFERRAL_CLOSING_DATE;
 import static com.agh.hydra.common.exception.TechnicalException.JOB_ANNOUNCEMENT_NOT_FOUND;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_REFERRAL;
+import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_INVALIDATE_REFERRAL;
+import static com.agh.hydra.common.util.CollectionUtils.mapList;
 import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
 import static java.util.Collections.singleton;
 
@@ -54,6 +58,12 @@ public class ReferralService implements IReferralService {
         entity.setAuthorId(getValue(userId));
 
         referralRepository.createReferralAnnouncement(entity);
+    }
+
+    @Override
+    public void invalidateReferralAnnouncement(@Valid @NotNull ReferralAnnouncementRequest request, @Valid @NotNull UserId userId) {
+        privilegeService.throwIfUnprivileged(userId, FN_PRV_INVALIDATE_REFERRAL);
+        referralRepository.invalidateReferralAnnouncement(mapList(request.getIds(), ValueObject::getValue));
     }
 
     private JobAnnouncement getJobAnnouncement(JobId jobId) {
