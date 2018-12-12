@@ -12,17 +12,32 @@ import lombok.Setter;
 public class ReferralDetailsEntity extends ReferralEntity {
 
     /**
-     * Database identifier
+     * Username
      */
-    private Long referralId;
+    private String username;
 
     /**
-     * Job announcement identifier
+     * User image URL address
      */
-    private Long jobId;
+    private String userImageUrl;
 
     /**
-     * Author user identifier
+     * Job title
      */
-    private String authorId;
+    private String title;
+
+    /**
+     * City
+     */
+    private String city;
+
+    /**
+     * company identifier
+     */
+    private String companyId;
+
+    /**
+     * Company name
+     */
+    private String companyName;
 }

@@ -2,6 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.agh.hydra.referral.dao.ReferralRepository">
 
+    <resultMap id="ReferralAnnouncementMap" type="com.agh.hydra.referral.entity.ReferralDetailsEntity">
+        <id column="id" property="referralId"/>
+        <result column="author_id" property="authorId"/>
+        <result column="job_id" property="jobId"/>
+        <result column="description" property="description"/>
+        <result column="referral_bonus" property="referralBonus"/>
+        <result column="referral_bonus_percentage" property="referralBonusPercentage"/>
+        <result column="closing_date" property="closingDate"/>
+        <result column="active" property="active"/>
+
+        <result column="username" property="username"/>
+        <result column="imageUrl" property="userImageUrl"/>
+
+        <result column="company_name" property="companyName"/>
+        <result column="company_id" property="companyId"/>
+
+        <result column="city" property="city"/>
+        <result column="title" property="title"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        r.id,
+        r.author_id,
+        r.job_id,
+        r.description,
+        r.referral_bonus,
+        r.referral_bonus_percentage,
+        r.closing_date,
+        case when r.active = 'Y' then 1 else 0 end as active,
+
+        u.username,
+        u.imageUrl,
+
+        c.company_id,
+        c.name as company_name,
+
+        j.title,
+        j.city
+    </sql>
+
 
     <insert id="createReferralAnnouncement" parameterType="com.agh.hydra.referral.entity.ReferralEntity">
        insert into hydra.REFERRAL_ANNOUNCEMENT
@@ -27,5 +67,77 @@
             #{referralId}
         </foreach>
     </update>
+
+    <select id="getReferralAnnouncement"
+            resultMap="ReferralAnnouncementMap"
+            parameterType="com.agh.hydra.referral.model.ReferralAnnouncementFilter">
+        select
+        <include refid="selectColumns"/>
+        from hydra.REFERRAL_ANNOUNCEMENT r
+            join hydra.JOB_ANNOUNCEMENT j on r.job_id = j.id
+            join hydra.HYDRA_USER u on r.author_id = u.user_id
+            left join hydra.COMPANY c on j.company_id = c.company_id
+        <include refid="filterCriteria"/>
+        order by r.closing_date
+        offset #{offset}
+        limit #{pageSize}
+    </select>
+
+    <select id="getReferralAnnouncementCount"
+            resultType="long"
+            parameterType="com.agh.hydra.referral.model.ReferralAnnouncementFilter">
+        select count(*)
+            from hydra.REFERRAL_ANNOUNCEMENT r
+            join hydra.JOB_ANNOUNCEMENT j on r.job_id = j.id
+        <include refid="filterCriteria"/>
+    </select>
+
+
+    <sql id="filterCriteria">
+        <where>
+            r.active = 'Y'
+            and r.closing_date > CURRENT_TIMESTAMP
+            <include refid="companyIdFilter"/>
+            <include refid="refIdFilter"/>
+            <include refid="programmingLanguageFilter"/>
+            <include refid="cityFilter"/>
+        </where>
+    </sql>
+
+    <sql id="refIdFilter">
+        <if test="includeIds != null and !includeIds.isEmpty()">
+            and r.id in
+            <foreach collection="includeIds" item="refId" index="index" open="(" separator="," close=")">
+                #{refId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="companyIdFilter">
+        <if test="companyIds != null and !companyIds.isEmpty()">
+            and j.company_id in
+            <foreach collection="companyIds" item="companyId" index="index" open="(" separator="," close=")">
+                #{companyId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="programmingLanguageFilter">
+        <if test="languages != null and !languages.isEmpty()">
+            and
+            <foreach collection="languages" item="language" index="index" open="(" separator=" or " close=")">
+                j.programming_languages like ('%' || #{language} || '%')
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="cityFilter">
+        <if test="cities != null and !cities.isEmpty()">
+            and j.city in
+            <foreach collection="cities" item="city" index="index" open="(" separator="," close=")">
+                #{city}
+            </foreach>
+        </if>
+    </sql>
 
 </mapper>
