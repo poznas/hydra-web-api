@@ -1,4 +1,5 @@
- - #70 impl for service : POST /referral/invalidate
+ - #67 impl for service : GET /referral/referrals
+ - #70 impl for service : PUT /referral/invalidate
  - #66 impl for service : POST /referral/add
  - #62 impl for service : PUT /job/invalidate
  - #52 impl for service : GET /job/jobs

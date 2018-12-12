@@ -1,12 +1,20 @@
 package com.agh.hydra.referral.mapper;
 
 import com.agh.hydra.common.mapper.BaseMapper;
+import com.agh.hydra.referral.entity.ReferralDetailsEntity;
 import com.agh.hydra.referral.entity.ReferralEntity;
+import com.agh.hydra.referral.model.ReferralAnnouncement;
+import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
+import com.agh.hydra.referral.model.ReferralId;
 import com.agh.hydra.referral.request.CreateReferralRequest;
+import com.agh.hydra.referral.request.ReferralAnnouncementFilterRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import static com.agh.hydra.common.util.ValueObjectUtil.getValue;
+import static com.agh.hydra.common.util.ValueObjectUtil.valueObject;
 
 @SuppressWarnings("squid:S1214")
 @Mapper(config = BaseMapper.class)
@@ -19,4 +27,19 @@ public interface ReferralMapper extends BaseMapper {
             @Mapping(target = "authorId", ignore = true),
             @Mapping(target = "active", ignore = true)})
     ReferralEntity mapCreateRequest(CreateReferralRequest request);
+
+    @Mappings({
+            @Mapping(target = "pageSize", ignore = true),
+            @Mapping(target = "offset", ignore = true)})
+    ReferralAnnouncementFilter mapFilter(ReferralAnnouncementFilterRequest request);
+
+    ReferralAnnouncement mapAnnouncement(ReferralDetailsEntity entity);
+
+    default ReferralId mapRefId(Long id) {
+        return valueObject(id, ReferralId::of);
+    }
+
+    default Long mapRefId(ReferralId id) {
+        return getValue(id);
+    }
 }

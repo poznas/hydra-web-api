@@ -1,6 +1,8 @@
 package com.agh.hydra.referral.dao;
 
+import com.agh.hydra.referral.entity.ReferralDetailsEntity;
 import com.agh.hydra.referral.entity.ReferralEntity;
+import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,4 +16,8 @@ public interface ReferralRepository {
     boolean referralAnnouncementExists(@Param("authorId") String authorId, @Param("jobId") Long jobId);
 
     void invalidateReferralAnnouncement(@Param("ids") List<Long> ids);
+
+    List<ReferralDetailsEntity> getReferralAnnouncement(ReferralAnnouncementFilter filter);
+
+    long getReferralAnnouncementCount(ReferralAnnouncementFilter filter);
 }
