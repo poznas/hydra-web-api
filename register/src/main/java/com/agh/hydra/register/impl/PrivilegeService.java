@@ -45,9 +45,7 @@ public class PrivilegeService implements IPrivilegeService {
 
     @Override
     public void throwIfUnprivileged(@Valid @NotNull UserId userId, @NotNull FunctionalPrivilege privilege) {
-        if (!hasPrivilege(userId, privilege)) {
-            throw UNPRIVILEGED.getException();
-        }
+        UNPRIVILEGED.throwIf(!hasPrivilege(userId, privilege));
     }
 
     @Override

@@ -1,11 +1,13 @@
 package com.agh.hydra.referral.mapper;
 
 import com.agh.hydra.common.mapper.BaseMapper;
+import com.agh.hydra.referral.entity.ReferralApplicationEntity;
 import com.agh.hydra.referral.entity.ReferralDetailsEntity;
 import com.agh.hydra.referral.entity.ReferralEntity;
 import com.agh.hydra.referral.model.ReferralAnnouncement;
 import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
 import com.agh.hydra.referral.model.ReferralId;
+import com.agh.hydra.referral.request.CreateReferralApplicationRequest;
 import com.agh.hydra.referral.request.CreateReferralRequest;
 import com.agh.hydra.referral.request.ReferralAnnouncementFilterRequest;
 import org.mapstruct.Mapper;
@@ -34,6 +36,11 @@ public interface ReferralMapper extends BaseMapper {
     ReferralAnnouncementFilter mapFilter(ReferralAnnouncementFilterRequest request);
 
     ReferralAnnouncement mapAnnouncement(ReferralDetailsEntity entity);
+
+    @Mappings({
+            @Mapping(target = "applicationId", ignore = true),
+            @Mapping(target = "userId", ignore = true)})
+    ReferralApplicationEntity mapApplication(CreateReferralApplicationRequest request);
 
     default ReferralId mapRefId(Long id) {
         return valueObject(id, ReferralId::of);

@@ -2,10 +2,7 @@ package com.agh.hydra.referral.model;
 
 import com.agh.hydra.common.model.PageData;
 import com.agh.hydra.common.model.ProgrammingLanguage;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.Valid;
 import java.util.Set;
@@ -15,6 +12,17 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReferralAnnouncementFilter extends PageData {
+
+    @Builder
+    public ReferralAnnouncementFilter(int pageSize, long offset, @Valid Set<Long> includeIds,
+                                      @Valid Set<String> companyIds, @Valid Set<String> cities,
+                                      @Valid Set<ProgrammingLanguage> languages) {
+        super(pageSize, offset);
+        this.includeIds = includeIds;
+        this.companyIds = companyIds;
+        this.cities = cities;
+        this.languages = languages;
+    }
 
     /**
      * Job announcement identifiers

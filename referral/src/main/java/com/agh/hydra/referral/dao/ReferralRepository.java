@@ -1,5 +1,6 @@
 package com.agh.hydra.referral.dao;
 
+import com.agh.hydra.referral.entity.ReferralApplicationEntity;
 import com.agh.hydra.referral.entity.ReferralDetailsEntity;
 import com.agh.hydra.referral.entity.ReferralEntity;
 import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
@@ -20,4 +21,8 @@ public interface ReferralRepository {
     List<ReferralDetailsEntity> getReferralAnnouncement(ReferralAnnouncementFilter filter);
 
     long getReferralAnnouncementCount(ReferralAnnouncementFilter filter);
+
+    boolean referralApplicationExists(@Param("userId") String userId, @Param("referralId") Long referralId);
+
+    void createReferralApplication(ReferralApplicationEntity application);
 }
