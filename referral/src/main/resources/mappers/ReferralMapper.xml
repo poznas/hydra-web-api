@@ -59,6 +59,20 @@
         )
     </select>
 
+    <insert id="createReferralApplication" parameterType="com.agh.hydra.referral.entity.ReferralApplicationEntity">
+       insert into hydra.REFERRAL_APPLICATION
+              (referral_id, user_id, github_url, linkedin_url, cv_url)
+              select  #{referralId}, #{userId}, #{githubUrl}, #{linkedinUrl}, #{cvUrl};
+     </insert>
+
+    <select id="referralApplicationExists" resultType="boolean">
+        select exists (
+          select 1 from hydra.REFERRAL_APPLICATION
+            where user_id = #{userId}
+            and referral_id = #{referralId}
+        )
+    </select>
+
     <update id="invalidateReferralAnnouncement" parameterType="long">
         update hydra.REFERRAL_ANNOUNCEMENT set
         active = 'N'

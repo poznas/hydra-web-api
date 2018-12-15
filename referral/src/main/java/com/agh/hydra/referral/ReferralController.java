@@ -4,6 +4,7 @@ import com.agh.hydra.common.documentation.BaseDocumentation;
 import com.agh.hydra.common.documentation.BasePageDocumentation;
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.referral.model.ReferralAnnouncement;
+import com.agh.hydra.referral.request.CreateReferralApplicationRequest;
 import com.agh.hydra.referral.request.CreateReferralRequest;
 import com.agh.hydra.referral.request.ReferralAnnouncementFilterRequest;
 import com.agh.hydra.referral.request.ReferralAnnouncementRequest;
@@ -34,6 +35,7 @@ public class ReferralController {
     private static final String REFERRAL_CREATE_ANNOUNCEMENT = "/add";
     private static final String REFERRAL_INVALIDATE_ANNOUNCEMENT = "/invalidate";
     private static final String REFERRAL_ANNOUNCEMENTS = "/referrals";
+    private static final String REFERRAL_APPLY = "/apply";
 
     private final IReferralService referralService;
 
@@ -56,5 +58,12 @@ public class ReferralController {
     public Page<ReferralAnnouncement> getReferralAnnouncement(@Valid @Nullable @RequestBody ReferralAnnouncementFilterRequest request,
                                                               @ApiIgnore @PageableDefault Pageable pageable) {
         return referralService.getReferralAnnouncement(request, pageable);
+    }
+
+    @BaseDocumentation
+    @PostMapping(REFERRAL_APPLY)
+    public void applyForReferralAnnouncement(@Valid @NotNull @RequestBody CreateReferralApplicationRequest request,
+                                             @ApiIgnore @RequestAttribute UserId userId) {
+        referralService.applyForReferralAnnouncement(request, userId);
     }
 }
