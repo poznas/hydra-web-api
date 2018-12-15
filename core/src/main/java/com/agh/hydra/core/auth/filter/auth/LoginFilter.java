@@ -62,7 +62,7 @@ public class LoginFilter implements Filter, AuthFilter {
             }
 
             request.setAttribute(ATTRIBUTE_USER_ID, user.get().getId());
-            addAuthorizationHeader(getValue(user.get().getId()), response);
+            addAuthHeaders(getValue(user.get().getId()), response);
             filterChain.doFilter(servletRequest, response);
         } else {
             response.sendError(UNAUTHORIZED.value());

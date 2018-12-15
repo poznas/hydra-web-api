@@ -41,7 +41,7 @@ public class BearerFilter extends OncePerRequestFilter implements AuthFilter {
 
         if(userId.isPresent()) {
             request.setAttribute(ATTRIBUTE_USER_ID, UserId.of(userId.get()));
-            addAuthorizationHeader(userId.get(), response);
+            addAuthHeaders(userId.get(), response);
             filterChain.doFilter(request, response);
         } else {
             response.sendError(UNAUTHORIZED.value());
