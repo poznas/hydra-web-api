@@ -7,6 +7,7 @@ import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Mapper
@@ -25,4 +26,6 @@ public interface ReferralRepository {
     boolean referralApplicationExists(@Param("userId") String userId, @Param("referralId") Long referralId);
 
     void createReferralApplication(ReferralApplicationEntity application);
+
+    List<ReferralApplicationEntity> getReferralApplications(@NotNull @Param("referralId") Long referralId);
 }

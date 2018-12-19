@@ -22,7 +22,18 @@
         <result column="title" property="title"/>
     </resultMap>
 
-    <sql id="selectColumns">
+    <resultMap id="ReferralApplicationMap" type="com.agh.hydra.referral.entity.ReferralApplicationEntity">
+        <id column="id" property="applicationId"/>
+        <id column="referral_id" property="referralId"/>
+        <id column="user_id" property="userId"/>
+        <id column="username" property="username"/>
+        <id column="imageUrl" property="userImageUrl"/>
+        <id column="github_url" property="githubUrl"/>
+        <id column="linkedin_url" property="linkedinUrl"/>
+        <id column="cv_url" property="cvUrl"/>
+    </resultMap>
+
+    <sql id="selectAnnouncementColumns">
         r.id,
         r.author_id,
         r.job_id,
@@ -40,6 +51,18 @@
 
         j.title,
         j.city
+    </sql>
+
+    <sql id="selectApplicationColumns">
+        a.id,
+        a.referral_id,
+        a.github_url,
+        a.linkedin_url,
+        a.cv_url,
+
+        u.user_id,
+        u.username,
+        u.imageUrl
     </sql>
 
 
@@ -73,6 +96,14 @@
         )
     </select>
 
+    <select id="getReferralApplications" resultMap="ReferralApplicationMap">
+        select
+        <include refid="selectApplicationColumns"/>
+        from hydra.REFERRAL_APPLICATION a
+          natural join hydra.HYDRA_USER u
+        where referral_id = #{referralId}
+    </select>
+
     <update id="invalidateReferralAnnouncement" parameterType="long">
         update hydra.REFERRAL_ANNOUNCEMENT set
         active = 'N'
@@ -86,7 +117,7 @@
             resultMap="ReferralAnnouncementMap"
             parameterType="com.agh.hydra.referral.model.ReferralAnnouncementFilter">
         select
-        <include refid="selectColumns"/>
+        <include refid="selectAnnouncementColumns"/>
         from hydra.REFERRAL_ANNOUNCEMENT r
             join hydra.JOB_ANNOUNCEMENT j on r.job_id = j.id
             join hydra.HYDRA_USER u on r.author_id = u.user_id
