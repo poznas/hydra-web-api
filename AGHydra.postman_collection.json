@@ -169,7 +169,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"userId\" : \"105415129624444296101\",\n\t\"privileges\" : [\n    \"FN_PRV_EDIT_PRIVILEGES\",\n    \"FN_PRV_INVALIDATE_COMPANIES\",\n    \"FN_PRV_EDIT_COMPANIES\",\n    \"FN_PRV_CREATE_INFORMATION\",\n    \"FN_PRV_INVALIDATE_RECRUITMENT_INFO\"\n]\n}"
+							"raw": "{\n\t\"userId\" : \"105415129624444296101\",\n\t\"privileges\" : [\n    \"FN_PRV_EDIT_PRIVILEGES\",\n    \"FN_PRV_INVALIDATE_COMPANIES\",\n    \"FN_PRV_EDIT_COMPANIES\",\n    \"FN_PRV_CREATE_INFORMATION\",\n    \"FN_PRV_INVALIDATE_RECRUITMENT_INFO\",\n    \"FN_PRV_EDIT_JOBS\",\n    \"FN_PRV_INVALIDATE_JOBS\",\n    \"FN_PRV_CREATE_REFERRAL\",\n    \"FN_PRV_INVALIDATE_REFERRAL\"\n]\n}"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/auth/privileges/add",
@@ -280,7 +280,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n     \r\n    }"
+							"raw": "{\r\n     \"companyIds\" : []\r\n    }"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/register/company/companies?page=0&size=10",
@@ -419,7 +419,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"companyIds\" : [\"schibsted\"]\n}"
+							"raw": "{\n\t\"companyIds\" : [\"schibsted\", \"ailleron\"],\n\t\"includeIds\" : [1,2,3],\n\t\"languages\" : [\"C\"],\n\t\"types\" : []\n}"
 						},
 						"url": {
 							"raw": "{{ENDPOINT}}/hydra/wiki/recruitment/info/entries",
@@ -467,6 +467,324 @@
 								"recruitment",
 								"info",
 								"vote"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JOB",
+			"item": [
+				{
+					"name": "create job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"companyId\" : \"comarch\",\r\n      \"title\" : \"Python Developer\",\r\n      \"description\" : \"Support python applications from 2006\",\r\n      \"programmingLanguages\" : [\"C\", \"PYTHON\"],\r\n      \"minSalary\" : 11000,\r\n      \"maxSalary\" : 14000,\r\n      \"closingDate\" : 1544054400,\r\n      \"city\" : \"Cracow\"\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/job/add",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"job",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET jobs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"languages\" : [\"JAVASCRIPT\", \"PYTHON\"],\n\t\"companyIds\" : [\"comarch\"],\n\t\"cities\" : [\"Wasraw\"],\n\t\"includeIds\" : [1,2,3]\n}"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/job/jobs?size=1",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"job",
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalidate job",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ids\" : [6,7,8]\n}"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/job/invalidate",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"job",
+								"invalidate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REFERRAL",
+			"item": [
+				{
+					"name": "create referral",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"jobId\" : 2,\r\n      \"description\" : \"50/50 fair deal\",\r\n      \"referralBonus\" : 12000,\r\n      \"referralBonusPercentage\" : 0.5,\r\n      \"closingDate\" : 1544054400\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/referral/add",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"referral",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "apply for referral",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"jobId\" : 2,\r\n      \"description\" : \"50/50 fair deal\",\r\n      \"referralBonus\" : 12000,\r\n      \"referralBonusPercentage\" : 0.5,\r\n      \"closingDate\" : 1544054400\r\n    }"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/referral/add",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"referral",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalidate referral",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ids\" : [6,7,8,1]\n}"
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/referral/invalidate",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"referral",
+								"invalidate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET referrals",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/referral/referrals",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"referral",
+								"referrals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET applications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/referral/applications/1",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"referral",
+								"applications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET appliers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BEARER}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/hydra/referral/appliers/1",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"hydra",
+								"referral",
+								"appliers",
+								"1"
 							]
 						}
 					},

@@ -1,3 +1,4 @@
+ - update postman collection, [job, referral]
  - #79 impl for service : GET /referral/appliers/{referralId}
  - #69 impl for service : GET /referral/applications/{referralId}
  - #68 impl for service : POST /referral/apply
