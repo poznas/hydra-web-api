@@ -1,5 +1,6 @@
 package com.agh.hydra.referral.service;
 
+import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.referral.model.ReferralAnnouncement;
 import com.agh.hydra.referral.model.ReferralApplication;
@@ -59,4 +60,11 @@ public interface IReferralService {
      */
     List<ReferralApplication> getReferralApplications(@Valid @NotNull ReferralId referralId,
                                                       @Valid @NotNull UserId userId);
+
+    /**
+     * Get referral applier list
+     *
+     * @param referralId referral announcement identifier
+     */
+    List<User> getReferralAppliers(@Valid @NotNull ReferralId referralId);
 }

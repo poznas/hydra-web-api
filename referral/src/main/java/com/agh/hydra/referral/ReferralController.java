@@ -1,5 +1,6 @@
 package com.agh.hydra.referral;
 
+import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.common.documentation.BaseDocumentation;
 import com.agh.hydra.common.documentation.BasePageDocumentation;
 import com.agh.hydra.common.model.UserId;
@@ -40,6 +41,7 @@ public class ReferralController {
     private static final String REFERRAL_ANNOUNCEMENTS = "/referrals";
     private static final String REFERRAL_APPLY = "/apply";
     private static final String REFERRAL_APPLICATIONS = "/applications/{referralId}";
+    private static final String REFERRAL_APPLIERS = "/appliers/{referralId}";
 
     private final IReferralService referralService;
 
@@ -76,5 +78,11 @@ public class ReferralController {
     public List<ReferralApplication> getReferralApplications(@NotNull @PathVariable("referralId") Long referralId,
                                                              @ApiIgnore @RequestAttribute UserId userId) {
         return referralService.getReferralApplications(ReferralId.of(referralId), userId);
+    }
+
+    @BaseDocumentation
+    @GetMapping(REFERRAL_APPLIERS)
+    public List<User> getReferralAppliers(@NotNull @PathVariable("referralId") Long referralId) {
+        return referralService.getReferralAppliers(ReferralId.of(referralId));
     }
 }
