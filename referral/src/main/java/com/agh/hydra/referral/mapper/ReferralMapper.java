@@ -1,5 +1,6 @@
 package com.agh.hydra.referral.mapper;
 
+import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.common.mapper.BaseMapper;
 import com.agh.hydra.referral.entity.ReferralApplicationEntity;
 import com.agh.hydra.referral.entity.ReferralDetailsEntity;
@@ -43,6 +44,13 @@ public interface ReferralMapper extends BaseMapper {
     ReferralApplicationEntity mapApplication(CreateReferralApplicationRequest request);
 
     ReferralApplication mapApplication(ReferralApplicationEntity entity);
+
+    @Mappings({
+            @Mapping(target = "id", source = "userId"),
+            @Mapping(target = "imageUrl", source = "userImageUrl"),
+            @Mapping(target = "provider", ignore = true),
+            @Mapping(target = "email", ignore = true)})
+    User mapApplier(ReferralApplicationEntity entity);
 
     default ReferralId mapRefId(Long id) {
         return valueObject(id, ReferralId::of);

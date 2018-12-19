@@ -1,5 +1,6 @@
 package com.agh.hydra.referral.impl;
 
+import com.agh.hydra.api.register.model.User;
 import com.agh.hydra.api.register.service.IPrivilegeService;
 import com.agh.hydra.common.model.JobId;
 import com.agh.hydra.common.model.UserId;
@@ -118,6 +119,12 @@ public class ReferralService implements IReferralService {
 
         return mapList(referralRepository.getReferralApplications(getValue(referralId)),
                 ReferralMapper.INSTANCE::mapApplication);
+    }
+
+    @Override
+    public List<User> getReferralAppliers(@Valid @NotNull ReferralId referralId) {
+        return mapList(referralRepository.getReferralApplications(getValue(referralId)),
+                ReferralMapper.INSTANCE::mapApplier);
     }
 
     private JobAnnouncement getJobAnnouncement(JobId jobId) {
