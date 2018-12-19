@@ -4,6 +4,8 @@ import com.agh.hydra.common.documentation.BaseDocumentation;
 import com.agh.hydra.common.documentation.BasePageDocumentation;
 import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.referral.model.ReferralAnnouncement;
+import com.agh.hydra.referral.model.ReferralApplication;
+import com.agh.hydra.referral.model.ReferralId;
 import com.agh.hydra.referral.request.CreateReferralApplicationRequest;
 import com.agh.hydra.referral.request.CreateReferralRequest;
 import com.agh.hydra.referral.request.ReferralAnnouncementFilterRequest;
@@ -21,6 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 import static com.agh.hydra.referral.ReferralController.REFERRAL_CONTEXT;
 
@@ -36,6 +39,7 @@ public class ReferralController {
     private static final String REFERRAL_INVALIDATE_ANNOUNCEMENT = "/invalidate";
     private static final String REFERRAL_ANNOUNCEMENTS = "/referrals";
     private static final String REFERRAL_APPLY = "/apply";
+    private static final String REFERRAL_APPLICATIONS = "/applications/{referralId}";
 
     private final IReferralService referralService;
 
@@ -65,5 +69,12 @@ public class ReferralController {
     public void applyForReferralAnnouncement(@Valid @NotNull @RequestBody CreateReferralApplicationRequest request,
                                              @ApiIgnore @RequestAttribute UserId userId) {
         referralService.applyForReferralAnnouncement(request, userId);
+    }
+
+    @BaseDocumentation
+    @GetMapping(REFERRAL_APPLICATIONS)
+    public List<ReferralApplication> getReferralApplications(@NotNull @PathVariable("referralId") Long referralId,
+                                                             @ApiIgnore @RequestAttribute UserId userId) {
+        return referralService.getReferralApplications(ReferralId.of(referralId), userId);
     }
 }

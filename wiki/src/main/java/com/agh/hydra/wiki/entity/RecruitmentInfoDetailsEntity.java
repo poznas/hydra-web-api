@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.Valid;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -16,7 +14,6 @@ public class RecruitmentInfoDetailsEntity extends RecruitmentInfoEntity {
     /**
      * Username
      */
-    @Valid
     private String username;
 
     /**
@@ -27,7 +24,6 @@ public class RecruitmentInfoDetailsEntity extends RecruitmentInfoEntity {
     /**
      * Company name
      */
-    @Valid
     private String companyName;
 
     /**

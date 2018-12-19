@@ -1,5 +1,7 @@
-package com.agh.hydra.referral.entity;
+package com.agh.hydra.referral.model;
 
+import com.agh.hydra.common.model.UserId;
+import com.agh.hydra.common.model.Username;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,27 +11,27 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReferralApplicationEntity {
+public class ReferralApplication {
 
     /**
      * Database identifier
      */
-    private Long applicationId;
+    private ApplicationId applicationId;
 
     /**
      * Referral announcement identifier
      */
-    private Long referralId;
+    private ReferralId referralId;
 
     /**
      * applier identifier
      */
-    private String userId;
+    private UserId userId;
 
     /**
      * Username
      */
-    private String username;
+    private Username username;
 
     /**
      * User image URL address

@@ -15,7 +15,8 @@ public enum BusinessException {
     ACTIVE_REFERRAL_EXISTS("User has active referral announcement referencing that job"),
     REFERRAL_AUTHOR_APPLICATION("Author can not apply for own referral announcement"),
     REFERRAL_NOT_FOUND("Referral announcement does not exist"),
-    REFERRAL_APPLICATION_EXISTS("User has already applied for that referral announcement");
+    REFERRAL_APPLICATION_EXISTS("User has already applied for that referral announcement"),
+    REFERRAL_APPLICATION_VIEW_DENIED("Referral announcement applications can be viewed only by the announcement author");
 
     private final String message;
 

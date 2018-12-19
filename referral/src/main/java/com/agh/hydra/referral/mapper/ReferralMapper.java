@@ -4,9 +4,7 @@ import com.agh.hydra.common.mapper.BaseMapper;
 import com.agh.hydra.referral.entity.ReferralApplicationEntity;
 import com.agh.hydra.referral.entity.ReferralDetailsEntity;
 import com.agh.hydra.referral.entity.ReferralEntity;
-import com.agh.hydra.referral.model.ReferralAnnouncement;
-import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
-import com.agh.hydra.referral.model.ReferralId;
+import com.agh.hydra.referral.model.*;
 import com.agh.hydra.referral.request.CreateReferralApplicationRequest;
 import com.agh.hydra.referral.request.CreateReferralRequest;
 import com.agh.hydra.referral.request.ReferralAnnouncementFilterRequest;
@@ -39,8 +37,12 @@ public interface ReferralMapper extends BaseMapper {
 
     @Mappings({
             @Mapping(target = "applicationId", ignore = true),
-            @Mapping(target = "userId", ignore = true)})
+            @Mapping(target = "userId", ignore = true),
+            @Mapping(target = "username", ignore = true),
+            @Mapping(target = "userImageUrl", ignore = true)})
     ReferralApplicationEntity mapApplication(CreateReferralApplicationRequest request);
+
+    ReferralApplication mapApplication(ReferralApplicationEntity entity);
 
     default ReferralId mapRefId(Long id) {
         return valueObject(id, ReferralId::of);
@@ -48,5 +50,9 @@ public interface ReferralMapper extends BaseMapper {
 
     default Long mapRefId(ReferralId id) {
         return getValue(id);
+    }
+
+    default ApplicationId mapAppId(Long id) {
+        return valueObject(id, ApplicationId::of);
     }
 }
