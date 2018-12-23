@@ -94,7 +94,7 @@
             resultMap="InfoDetailsResultMap"
             parameterType="com.agh.hydra.wiki.model.RecruitmentInfoFilter">
         with RELIABILITY_RATIO as (
-          select user_id, (up_votes / (up_votes + down_votes)) as ratio from (
+          select user_id, (up_votes * 1.0 / (up_votes + down_votes)) as ratio from (
               select u.user_id,
                      sum(case
                         when v.vote = 'UP'
