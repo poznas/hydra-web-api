@@ -1,6 +1,7 @@
 package com.agh.hydra.referral.model;
 
 import com.agh.hydra.common.model.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -58,6 +59,7 @@ public class ReferralAnnouncement {
     /**
      * Closing date
      */
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Instant closingDate;
 
     /**

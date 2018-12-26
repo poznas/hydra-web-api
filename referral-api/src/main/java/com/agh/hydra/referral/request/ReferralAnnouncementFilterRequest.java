@@ -1,7 +1,9 @@
 package com.agh.hydra.referral.request;
 
 import com.agh.hydra.common.model.CompanyId;
+import com.agh.hydra.common.model.JobId;
 import com.agh.hydra.common.model.ProgrammingLanguage;
+import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.referral.model.ReferralId;
 import lombok.*;
 
@@ -20,6 +22,18 @@ public class ReferralAnnouncementFilterRequest {
      */
     @Valid
     private Set<ReferralId> includeIds;
+
+    /**
+     * Include author identifiers
+     */
+    @Valid
+    private Set<UserId> authorIds;
+
+    /**
+     * Include job identifiers
+     */
+    @Valid
+    private Set<JobId> jobIds;
 
     /**
      * Include company identifiers
