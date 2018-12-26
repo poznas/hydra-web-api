@@ -146,6 +146,8 @@
             <include refid="refIdFilter"/>
             <include refid="programmingLanguageFilter"/>
             <include refid="cityFilter"/>
+            <include refid="authorIdFilter"/>
+            <include refid="jobIdFilter"/>
         </where>
     </sql>
 
@@ -154,6 +156,24 @@
             and r.id in
             <foreach collection="includeIds" item="refId" index="index" open="(" separator="," close=")">
                 #{refId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="jobIdFilter">
+        <if test="jobIds != null and !jobIds.isEmpty()">
+            and r.job_id in
+            <foreach collection="jobIds" item="jobId" index="index" open="(" separator="," close=")">
+                #{jobId}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="authorIdFilter">
+        <if test="authorIds != null and !authorIds.isEmpty()">
+            and r.author_id in
+            <foreach collection="authorIds" item="authorId" index="index" open="(" separator="," close=")">
+                #{authorId}
             </foreach>
         </if>
     </sql>
