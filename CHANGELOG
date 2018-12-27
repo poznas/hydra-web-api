@@ -1,3 +1,4 @@
+ - fix referral applications SQL select
  - #84 add 'jobIds' and 'userIds' to referral list filters
  - #81 fix SQL author reliability ratio equation
  - update postman collection, [job, referral]

@@ -91,8 +91,8 @@
     <select id="referralApplicationExists" resultType="boolean">
         select exists (
           select 1 from hydra.REFERRAL_APPLICATION
-            where user_id = #{userId}
-            and referral_id = #{referralId}
+            where a.user_id = #{userId}
+            and a.referral_id = #{referralId}
         )
     </select>
 
@@ -100,8 +100,8 @@
         select
         <include refid="selectApplicationColumns"/>
         from hydra.REFERRAL_APPLICATION a
-          natural join hydra.HYDRA_USER u
-        where referral_id = #{referralId}
+          join hydra.HYDRA_USER u on u.user_id = a.user_id
+        where a.referral_id = #{referralId}
     </select>
 
     <update id="invalidateReferralAnnouncement" parameterType="long">
