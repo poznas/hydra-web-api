@@ -7,6 +7,7 @@ import com.agh.hydra.common.model.UserId
 import com.agh.hydra.core.auth.filter.auth.LoginFilter
 import com.agh.hydra.core.auth.service.TokenVerifier
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -26,6 +27,7 @@ class LoginFilterSpec extends Specification {
 
     def filter = new LoginFilter(tokenVerifier, userService, privilegeService)
 
+    @Unroll
     def "retrieve and save user data, set RS headers, set RQ attribute"() {
         given:
         def userId = UserId.of("tester")
@@ -35,9 +37,9 @@ class LoginFilterSpec extends Specification {
         1 * servletRequest.getHeader("X-ID-TOKEN") >> "Google ID Token"
         1 * tokenVerifier.verifyTokenId("Google ID Token") >> user
 
-        1 * userService.userExists(userId) >> false
+        1 * userService.userExists(userId) >> userExists
         1 * userService.updateUser(user)
-        1 * privilegeService.assignDefaultPrivileges(userId)
+        assignDefaultPrivileges * privilegeService.assignDefaultPrivileges(userId)
 
         1 * servletRequest.setAttribute("userId", userId)
         1 * servletResponse.addHeader("Authorization", _ as String)
@@ -50,6 +52,11 @@ class LoginFilterSpec extends Specification {
 
         then:
         noExceptionThrown()
+
+        where:
+        userExists || assignDefaultPrivileges
+        false      || 1
+        true       || 0
     }
 
     def "response with UNAUTHORIZED for invalid Google ID Token"() {

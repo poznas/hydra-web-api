@@ -1,3 +1,4 @@
+ - spice up login filter unit tests
  - add login filter unit tests
  - fix referral applications SQL select
  - #84 add 'jobIds' and 'userIds' to referral list filters
