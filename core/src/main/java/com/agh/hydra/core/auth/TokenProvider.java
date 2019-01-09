@@ -1,6 +1,5 @@
 package com.agh.hydra.core.auth;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 import lombok.experimental.UtilityClass;
@@ -29,12 +28,12 @@ public class TokenProvider {
 
     public static String getUserId(@NotBlank String token) {
             try {
-                Claims body = Jwts.parser()
+                var body = Jwts.parser()
                         .setSigningKey(SECRET)
                         .parseClaimsJws(token)
                         .getBody();
 
-                Instant expiration = body.getExpiration().toInstant();
+                var expiration = body.getExpiration().toInstant();
 
                 if (!expiration.isBefore(Instant.now())) {
                     return body.getSubject();

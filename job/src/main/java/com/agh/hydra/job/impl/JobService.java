@@ -6,7 +6,6 @@ import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.common.model.ValueObject;
 import com.agh.hydra.common.util.PageableUtils;
 import com.agh.hydra.job.dao.JobRepository;
-import com.agh.hydra.job.entity.JobEntity;
 import com.agh.hydra.job.mapper.JobMapper;
 import com.agh.hydra.job.model.JobAnnouncement;
 import com.agh.hydra.job.model.JobAnnouncementFilter;
@@ -24,7 +23,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -50,7 +48,7 @@ public class JobService implements IJobService {
     public void createJobAnnouncement(@Valid @NotNull CreateJobAnnouncementRequest request, @Valid @NotNull UserId userId) {
         privilegeService.throwIfUnprivileged(userId, FN_PRV_EDIT_JOBS);
 
-        JobEntity entity = JobMapper.INSTANCE.mapCreateRequest(request);
+        var entity = JobMapper.INSTANCE.mapCreateRequest(request);
 
         ofNullable(request.getProgrammingLanguages()).ifPresent(languages ->
                 entity.setProgrammingLanguages(languages.stream().map(Enum::name).collect(joining(","))));
@@ -61,17 +59,17 @@ public class JobService implements IJobService {
     @Override
     public Page<JobAnnouncement> getJobAnnouncements(@Valid JobAnnouncementFilterRequest request, @NotNull Pageable pageable) {
 
-        JobAnnouncementFilter filter = getOrDefault(request, JobMapper.INSTANCE::mapFilter, new JobAnnouncementFilter());
+        var filter = getOrDefault(request, JobMapper.INSTANCE::mapFilter, new JobAnnouncementFilter());
 
         PageableUtils.setPageableParams(filter, pageable);
 
-        List<JobAnnouncement> announcements = mapList(jobRepository.getJobAnnouncements(filter),
+        var announcements = mapList(jobRepository.getJobAnnouncements(filter),
                 job -> {
-                    JobAnnouncement announcement = JobMapper.INSTANCE.mapJob(job);
+                    var announcement = JobMapper.INSTANCE.mapJob(job);
                     announcement.setProgrammingLanguages(parseLanguages(job.getProgrammingLanguages()));
                     return announcement;
                 });
-        long total = jobRepository.getJobAnnouncementCount(filter);
+        var total = jobRepository.getJobAnnouncementCount(filter);
 
         return new PageImpl<>(announcements, pageable, total);
     }
@@ -83,7 +81,9 @@ public class JobService implements IJobService {
     }
 
     private Set<ProgrammingLanguage> parseLanguages(String languages) {
-        return getOrNull(languages, lang -> Stream.of(lang.split(",")).map(ProgrammingLanguage::valueOf).collect(toSet()));
+        return getOrNull(languages, lang -> Stream.of(lang.split(","))
+                .map(ProgrammingLanguage::valueOf)
+                .collect(toSet()));
     }
 
 

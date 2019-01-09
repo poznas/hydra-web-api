@@ -33,7 +33,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
 
     private Payload verifyGoogleTokenId(String tokenId) {
 
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
+        var verifier = new GoogleIdTokenVerifier
                 .Builder(new NetHttpTransport(), new JacksonFactory())
                 .setAudience(asList(IOS_GOOGLE_CLIENT_ID, ANDROID_GOOGLE_CLIENT_ID))
                 .setIssuers(issuers)

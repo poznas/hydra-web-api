@@ -10,8 +10,6 @@ import com.agh.hydra.job.model.JobAnnouncement;
 import com.agh.hydra.job.request.JobAnnouncementFilterRequest;
 import com.agh.hydra.job.service.IJobService;
 import com.agh.hydra.referral.dao.ReferralRepository;
-import com.agh.hydra.referral.entity.ReferralApplicationEntity;
-import com.agh.hydra.referral.entity.ReferralEntity;
 import com.agh.hydra.referral.mapper.ReferralMapper;
 import com.agh.hydra.referral.model.ReferralAnnouncement;
 import com.agh.hydra.referral.model.ReferralAnnouncementFilter;
@@ -58,7 +56,7 @@ public class ReferralService implements IReferralService {
     public void createReferralAnnouncement(@Valid @NotNull CreateReferralRequest request, @Valid @NotNull UserId userId) {
         privilegeService.throwIfUnprivileged(userId, FN_PRV_CREATE_REFERRAL);
 
-        JobAnnouncement jobAnnouncement = getJobAnnouncement(request.getJobId());
+        var jobAnnouncement = getJobAnnouncement(request.getJobId());
 
         INVALID_REFERRAL_CLOSING_DATE.throwIf(
                 jobAnnouncement.getClosingDate().isBefore(request.getClosingDate()));
@@ -66,7 +64,7 @@ public class ReferralService implements IReferralService {
         ACTIVE_REFERRAL_EXISTS.throwIf(
                 referralRepository.referralAnnouncementExists(getValue(userId), getValue(request.getJobId())));
 
-        ReferralEntity entity = ReferralMapper.INSTANCE.mapCreateRequest(request);
+        var entity = ReferralMapper.INSTANCE.mapCreateRequest(request);
         entity.setAuthorId(getValue(userId));
 
         referralRepository.createReferralAnnouncement(entity);
@@ -81,7 +79,7 @@ public class ReferralService implements IReferralService {
     @Override
     public Page<ReferralAnnouncement> getReferralAnnouncement(@Valid ReferralAnnouncementFilterRequest request,
                                                               @NotNull Pageable pageable) {
-        ReferralAnnouncementFilter filter = getOrDefault(request, ReferralMapper.INSTANCE::mapFilter,
+        var filter = getOrDefault(request, ReferralMapper.INSTANCE::mapFilter,
                 new ReferralAnnouncementFilter());
 
         PageableUtils.setPageableParams(filter, pageable);
@@ -89,7 +87,7 @@ public class ReferralService implements IReferralService {
         List<ReferralAnnouncement> announcements =
                 mapList(referralRepository.getReferralAnnouncement(filter), ReferralMapper.INSTANCE::mapAnnouncement);
 
-        long total = referralRepository.getReferralAnnouncementCount(filter);
+        var total = referralRepository.getReferralAnnouncementCount(filter);
 
         return new PageImpl<>(announcements, pageable, total);
     }
@@ -97,14 +95,14 @@ public class ReferralService implements IReferralService {
     @Override
     public void applyForReferralAnnouncement(@Valid @NotNull CreateReferralApplicationRequest request,
                                              @Valid @NotNull UserId applierId) {
-        ReferralAnnouncement announcement = getReferralAnnouncement(request.getReferralId());
+        var announcement = getReferralAnnouncement(request.getReferralId());
 
         REFERRAL_AUTHOR_APPLICATION.throwIf(announcement.getAuthorId().equals(applierId));
 
         REFERRAL_APPLICATION_EXISTS.throwIf(
                 referralRepository.referralApplicationExists(getValue(applierId), getValue(request.getReferralId())));
 
-        ReferralApplicationEntity application = ReferralMapper.INSTANCE.mapApplication(request);
+        var application = ReferralMapper.INSTANCE.mapApplication(request);
         application.setUserId(getValue(applierId));
 
         referralRepository.createReferralApplication(application);
@@ -114,7 +112,7 @@ public class ReferralService implements IReferralService {
     public List<ReferralApplication> getReferralApplications(@Valid @NotNull ReferralId referralId,
                                                              @Valid @NotNull UserId viewerId) {
 
-        ReferralAnnouncement announcement = getReferralAnnouncement(referralId);
+        var announcement = getReferralAnnouncement(referralId);
         REFERRAL_APPLICATION_VIEW_DENIED.throwIf(!announcement.getAuthorId().equals(viewerId));
 
         return mapList(referralRepository.getReferralApplications(getValue(referralId)),
@@ -136,7 +134,7 @@ public class ReferralService implements IReferralService {
     }
 
     private ReferralAnnouncement getReferralAnnouncement(@Valid @NotNull ReferralId referralId) {
-        ReferralAnnouncementFilter filter = ReferralAnnouncementFilter.builder()
+        var filter = ReferralAnnouncementFilter.builder()
                 .includeIds(singleton(getValue(referralId)))
                 .pageSize(1).offset(0).build();
 

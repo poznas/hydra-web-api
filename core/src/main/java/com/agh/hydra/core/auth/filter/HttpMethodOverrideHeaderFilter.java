@@ -28,10 +28,10 @@ public class HttpMethodOverrideHeaderFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        String headerValue = request.getHeader(HTTP_METHOD_OVERRIDE_HEADER);
+        var headerValue = request.getHeader(HTTP_METHOD_OVERRIDE_HEADER);
 
         if (RequestMethod.POST.name().equals(request.getMethod()) && hasLength(headerValue)) {
-            String method = headerValue.toUpperCase(ENGLISH);
+            var method = headerValue.toUpperCase(ENGLISH);
             request = new HttpMethodRequestWrapper(request, method);
         }
         filterChain.doFilter(request, response);

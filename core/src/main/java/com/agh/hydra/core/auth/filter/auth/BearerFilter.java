@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
@@ -35,7 +34,7 @@ public class BearerFilter extends OncePerRequestFilter implements AuthFilter {
 
         log.debug("Apply bearer filter : {}", request.getServletPath());
 
-        Optional<String> userId = ofNullable(request.getHeader(HEADER_AUTHORIZATION))
+        var userId = ofNullable(request.getHeader(HEADER_AUTHORIZATION))
                 .map(header -> header.replace(TOKEN_PREFIX, ""))
                 .map(TokenProvider::getUserId);
 

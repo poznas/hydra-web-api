@@ -5,12 +5,10 @@ import com.agh.hydra.common.model.UserId;
 import com.agh.hydra.common.model.ValueObject;
 import com.agh.hydra.common.util.PageableUtils;
 import com.agh.hydra.wiki.dao.WikiRepository;
-import com.agh.hydra.wiki.entity.RecruitmentInfoEntity;
 import com.agh.hydra.wiki.entity.VoteEntity;
 import com.agh.hydra.wiki.mapper.WikiMapper;
 import com.agh.hydra.wiki.model.InformationDetails;
 import com.agh.hydra.wiki.model.RecruitmentInfoFilter;
-import com.agh.hydra.wiki.model.Vote;
 import com.agh.hydra.wiki.request.BaseInformationRequest;
 import com.agh.hydra.wiki.request.CreateRecruitmentInfoRequest;
 import com.agh.hydra.wiki.request.RecruitmentInformationFilterRequest;
@@ -27,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_INFORMATION;
@@ -52,7 +49,7 @@ public class WikiService implements IWikiService {
                                              @Valid @NotNull UserId userId) {
         privilegeService.throwIfUnprivileged(userId, FN_PRV_CREATE_INFORMATION);
 
-        RecruitmentInfoEntity entity = WikiMapper.INSTANCE.mapCreateRequest(request);
+        var entity = WikiMapper.INSTANCE.mapCreateRequest(request);
         entity.setAuthorId(getValue(userId));
 
         wikiRepository.createInformation(entity);
@@ -73,7 +70,7 @@ public class WikiService implements IWikiService {
     @Override
     public Page<InformationDetails> getRecruitmentInformation(@Valid RecruitmentInformationFilterRequest request,
                                                               @NotNull Pageable pageable, @Valid @NotNull UserId userId) {
-        RecruitmentInfoFilter filter = getOrDefault(request,
+        var filter = getOrDefault(request,
                 WikiMapper.INSTANCE::mapFilterRequest, new RecruitmentInfoFilter());
 
         PageableUtils.setPageableParams(filter, pageable);
@@ -83,15 +80,15 @@ public class WikiService implements IWikiService {
 
         decorateUserVotes(informationDetails, userId);
 
-        long total = wikiRepository.getInformationCount(filter);
+        var total = wikiRepository.getInformationCount(filter);
 
         return new PageImpl<>(informationDetails, pageable, total);
     }
 
     private void decorateUserVotes(@NotNull List<InformationDetails> informationDetails, @NotNull UserId userId) {
         if(!isEmpty(informationDetails)){
-            List<Long> informationIds = mapList(informationDetails, details -> getValue(details.getId()));
-            Map<Long, Vote> userVotes = wikiRepository.getUserVotes(getValue(userId), informationIds).stream()
+            var informationIds = mapList(informationDetails, details -> getValue(details.getId()));
+            var userVotes = wikiRepository.getUserVotes(getValue(userId), informationIds).stream()
                     .collect(Collectors.toMap(VoteEntity::getInformationId, VoteEntity::getVote));
 
             informationDetails.forEach(details -> details.setUserVote(userVotes.get(getValue(details.getId()))));

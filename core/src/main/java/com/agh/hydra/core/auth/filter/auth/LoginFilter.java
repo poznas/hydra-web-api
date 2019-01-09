@@ -40,8 +40,8 @@ public class LoginFilter implements Filter, AuthFilter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        var request = (HttpServletRequest) servletRequest;
+        var response = (HttpServletResponse) servletResponse;
 
         log.debug("Apply login filter : {}", request.getServletPath());
 
@@ -55,7 +55,7 @@ public class LoginFilter implements Filter, AuthFilter {
         }
 
         if (user.isPresent()) {
-            boolean isNewUser = !userService.userExists(user.get().getId());
+            var isNewUser = !userService.userExists(user.get().getId());
             userService.updateUser(user.get());
             if (isNewUser) {
                 privilegeService.assignDefaultPrivileges(user.get().getId());

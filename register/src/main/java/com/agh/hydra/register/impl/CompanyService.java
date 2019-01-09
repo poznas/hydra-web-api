@@ -21,7 +21,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 import static com.agh.hydra.common.exception.TechnicalException.COMPANY_NOT_FOUND;
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_EDIT_COMPANIES;
@@ -55,9 +54,9 @@ public class CompanyService implements ICompanyService {
         privilegeService.throwIfUnprivileged(userId, FN_PRV_INVALIDATE_COMPANIES);
         log.info("Attempt to update companies : {}", request.getCompanyIds());
 
-        List<String> companyIds = mapList(request.getCompanyIds(), ValueObjectUtil::getValue);
+        var companyIds = mapList(request.getCompanyIds(), ValueObjectUtil::getValue);
 
-        List<CompanyEntity> companyEntities = companyRepository.findCompanyByIds(companyIds);
+        var companyEntities = companyRepository.findCompanyByIds(companyIds);
 
         companyIds.forEach(id -> {
                     if(!mapSet(companyEntities, CompanyEntity::getCompanyId).contains(id))
@@ -69,16 +68,16 @@ public class CompanyService implements ICompanyService {
     @Override
     public Page<Company> getCompanies(@Valid CompaniesRequest request, @NotNull Pageable pageable) {
 
-        List<String> companyIds = ofNullable(request)
+        var companyIds = ofNullable(request)
                 .map(CompaniesRequest::getCompanyIds)
                 .map(ids -> mapList(ids, ValueObjectUtil::getValue))
                 .orElse(null);
 
-        List<CompanyEntity> companyEntities = companyRepository
+        var companyEntities = companyRepository
                 .getCompaniesPageByIds(companyIds, pageable.getOffset(), pageable.getPageSize());
 
-        List<Company> companies = mapList(companyEntities, RegisterMapper.INSTANCE::mapCompanyEntity);
-        long total = companyRepository.getCompaniesCount(companyIds);
+        var companies = mapList(companyEntities, RegisterMapper.INSTANCE::mapCompanyEntity);
+        var total = companyRepository.getCompaniesCount(companyIds);
 
         return new PageImpl<>(companies, pageable, total);
     }
