@@ -84,8 +84,8 @@ public class ReferralService implements IReferralService {
 
         PageableUtils.setPageableParams(filter, pageable);
 
-        List<ReferralAnnouncement> announcements =
-                mapList(referralRepository.getReferralAnnouncement(filter), ReferralMapper.INSTANCE::mapAnnouncement);
+        var announcements = mapList(referralRepository.getReferralAnnouncement(filter),
+                ReferralMapper.INSTANCE::mapAnnouncement);
 
         var total = referralRepository.getReferralAnnouncementCount(filter);
 
@@ -126,8 +126,7 @@ public class ReferralService implements IReferralService {
     }
 
     private JobAnnouncement getJobAnnouncement(JobId jobId) {
-        JobAnnouncementFilterRequest filter =
-                JobAnnouncementFilterRequest.builder().includeIds(singleton(jobId)).build();
+        var filter = JobAnnouncementFilterRequest.builder().includeIds(singleton(jobId)).build();
 
         return jobService.getJobAnnouncements(filter, PageRequest.of(0, 1)).getContent().stream().findFirst()
                 .orElseThrow(() -> JOB_ANNOUNCEMENT_NOT_FOUND.throwWith(jobId));

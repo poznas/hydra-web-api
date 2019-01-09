@@ -75,8 +75,8 @@ public class WikiService implements IWikiService {
 
         PageableUtils.setPageableParams(filter, pageable);
 
-        List<InformationDetails> informationDetails =
-                mapList(wikiRepository.getRecruitmentInformation(filter), WikiMapper.INSTANCE::mapInfoDetails);
+        var informationDetails = mapList(wikiRepository.getRecruitmentInformation(filter),
+                WikiMapper.INSTANCE::mapInfoDetails);
 
         decorateUserVotes(informationDetails, userId);
 
