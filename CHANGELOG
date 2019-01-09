@@ -1,3 +1,4 @@
+ - add surefire test report plugin
  - add privilege service unit tests
  - add job service unit tests
  - replace local variable type declaration with var

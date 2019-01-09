@@ -56,6 +56,8 @@
         <org.codehaus.groovy.version>2.4.7</org.codehaus.groovy.version>
         <codehaus.gmaven.plus.version>1.5</codehaus.gmaven.plus.version>
         <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
+        <maven.surfire.plugin.report.version>3.0.0-M3</maven.surfire.plugin.report.version>
+        <maven.surfire.plugin.site.version>2.1</maven.surfire.plugin.site.version>
 
         <!-- auto doc dependencies properties -->
         <springfox.version>2.8.0</springfox.version>
@@ -286,6 +288,24 @@
                         <includes>
                             <include>%regex[.*Spec.*]</include>
                         </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${maven.surfire.plugin.report.version}</version>
+                    <configuration>
+                        <aggregate>true</aggregate>
+                        <linkXRef>true</linkXRef>
+                        <outputDirectory>target/newsite</outputDirectory>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.surfire.plugin.site.version}</version>
+                    <configuration>
+                        <outputDirectory>${basedir}/target/newsite</outputDirectory>
                     </configuration>
                 </plugin>
             </plugins>
