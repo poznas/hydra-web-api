@@ -14,15 +14,20 @@ import com.agh.hydra.referral.request.CreateReferralRequest
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.web.server.ResponseStatusException
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.Instant
 
+import static com.agh.hydra.common.exception.BusinessException.ACTIVE_REFERRAL_EXISTS
+import static com.agh.hydra.common.exception.BusinessException.INVALID_REFERRAL_CLOSING_DATE
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_REFERRAL
 import static java.time.temporal.ChronoUnit.DAYS
+import static java.util.Collections.emptyList
 import static java.util.Collections.singletonList
+import static org.springframework.http.HttpStatus.BAD_REQUEST
 
 class ReferralServiceSpec extends Specification {
 
@@ -42,15 +47,9 @@ class ReferralServiceSpec extends Specification {
     @Unroll
     def "createReferralAnnouncement() - happy path"() {
         given:
-        def request = [
-                jobId                  : testJobId,
-                description            : testDescription,
-                referralBonus          : referralBonus,
-                referralBonusPercentage: testBonusPercentage,
-                closingDate            : closingDate
-        ] as CreateReferralRequest
+        def request = buildCreateRequest(closingDate)
 
-        def job = job(testJobId, Instant.now().plus(2, DAYS))
+        def job = job(testJobId, testClosingDate.plus(2, DAYS))
 
         and:
         1 * privilegeService.throwIfUnprivileged(testUserId, FN_PRV_CREATE_REFERRAL)
@@ -84,13 +83,59 @@ class ReferralServiceSpec extends Specification {
         testClosingDate.minus(12, DAYS) | _
     }
 
+    @Unroll
+    def "createReferralAnnouncement() - unhappy path"() {
+        given:
+        def request = buildCreateRequest(closingDate)
+
+        and:
+        1 * privilegeService.throwIfUnprivileged(testUserId, FN_PRV_CREATE_REFERRAL)
+        1 * jobService.getJobAnnouncements(_ as JobAnnouncementFilterRequest, PageRequest.of(0, 1)) >> {
+            JobAnnouncementFilterRequest filter, Pageable pageable ->
+                assert filter.includeIds.every({ it == testJobId })
+
+                new PageImpl<>(job ? singletonList(job) : emptyList(), pageable, job ? 1 : 0)
+        }
+        (0..1) * referralRepository.referralAnnouncementExists(testUserId.value, testJobId.value) >> referralExists
+        0 * referralRepository.createReferralAnnouncement(_ as ReferralEntity)
+
+        when:
+        service.createReferralAnnouncement(request, testUserId)
+
+        then:
+        def exception = thrown(ResponseStatusException.class)
+        assert exception.status == BAD_REQUEST
+        assert exception.reason == errorMessage
+
+        where:
+        job       | closingDate                    | referralExists || errorMessage
+        testJob() | testClosingDate                | true           || ACTIVE_REFERRAL_EXISTS.message
+        testJob() | testClosingDate                | true           || ACTIVE_REFERRAL_EXISTS.message
+        testJob() | testClosingDate.plus(3, DAYS)  | false          || INVALID_REFERRAL_CLOSING_DATE.message
+        testJob() | testClosingDate.plus(12, DAYS) | false          || INVALID_REFERRAL_CLOSING_DATE.message
+        null      | testClosingDate.minus(3, DAYS) | false          || "Job announcement '" + testJobId + "' does not exist"
+        null      | testClosingDate.plus(12, DAYS) | true           || "Job announcement '" + testJobId + "' does not exist"
+    }
+
+
+    def testJob() {
+        job(testJobId, Instant.now().plus(2, DAYS))
+    }
 
     def job(JobId id, Instant closingDate) {
         [
                 jobId      : id,
                 closingDate: closingDate
         ] as JobAnnouncement
+    }
 
-
+    def buildCreateRequest(Instant closingDate) {
+        [
+                jobId                  : testJobId,
+                description            : testDescription,
+                referralBonus          : referralBonus,
+                referralBonusPercentage: testBonusPercentage,
+                closingDate            : closingDate
+        ] as CreateReferralRequest
     }
 }
