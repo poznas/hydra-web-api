@@ -1,16 +1,18 @@
 package com.agh.hydra.referral
 
 import com.agh.hydra.api.register.service.IPrivilegeService
-import com.agh.hydra.common.model.InformationContent
-import com.agh.hydra.common.model.JobId
-import com.agh.hydra.common.model.UserId
+import com.agh.hydra.common.model.*
 import com.agh.hydra.job.model.JobAnnouncement
 import com.agh.hydra.job.request.JobAnnouncementFilterRequest
 import com.agh.hydra.job.service.IJobService
 import com.agh.hydra.referral.dao.ReferralRepository
+import com.agh.hydra.referral.entity.ReferralDetailsEntity
 import com.agh.hydra.referral.entity.ReferralEntity
 import com.agh.hydra.referral.impl.ReferralService
+import com.agh.hydra.referral.model.ReferralAnnouncementFilter
+import com.agh.hydra.referral.model.ReferralId
 import com.agh.hydra.referral.request.CreateReferralRequest
+import com.agh.hydra.referral.request.ReferralAnnouncementFilterRequest
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -24,9 +26,11 @@ import java.time.Instant
 import static com.agh.hydra.common.exception.BusinessException.ACTIVE_REFERRAL_EXISTS
 import static com.agh.hydra.common.exception.BusinessException.INVALID_REFERRAL_CLOSING_DATE
 import static com.agh.hydra.common.model.FunctionalPrivilege.FN_PRV_CREATE_REFERRAL
+import static com.agh.hydra.common.util.CollectionUtils.haveSameElements
+import static com.agh.hydra.common.util.ValueObjectUtil.getValue
 import static java.time.temporal.ChronoUnit.DAYS
-import static java.util.Collections.emptyList
-import static java.util.Collections.singletonList
+import static java.util.Collections.*
+import static org.spockframework.util.CollectionUtil.asSet
 import static org.springframework.http.HttpStatus.BAD_REQUEST
 
 class ReferralServiceSpec extends Specification {
@@ -39,6 +43,7 @@ class ReferralServiceSpec extends Specification {
 
     @Shared def testUserId = UserId.of("1")
     @Shared def testJobId = JobId.of(2115)
+    @Shared def testCity = "Bengal"
     @Shared def testDescription = InformationContent.of("referral description")
     @Shared def referralBonus = 10000L
     @Shared def testBonusPercentage = 0.70
@@ -117,6 +122,83 @@ class ReferralServiceSpec extends Specification {
         null      | testClosingDate.plus(12, DAYS) | true           || "Job announcement '" + testJobId + "' does not exist"
     }
 
+    @Unroll
+    def "getReferralAnnouncement() - happy path"() {
+        given:
+        def pageable = PageRequest.of(0, 10)
+        def request = [
+                includeIds: includeIds.collect { ReferralId.of(it) },
+                companyIds: companyIds.collect { CompanyId.of(it) },
+                jobIds    : jobIds.collect { JobId.of(it) },
+                cities    : cities
+        ] as ReferralAnnouncementFilterRequest
+
+        and:
+        def repoContent = referralEntities(repoSize)
+        def repoResult = mockReferralRepository(repoContent, request)
+
+        and:
+        0 * privilegeService.throwIfUnprivileged(_ as UserId, _ as FunctionalPrivilege)
+        1 * referralRepository.getReferralAnnouncement(_ as ReferralAnnouncementFilter) >> {
+            ReferralAnnouncementFilter filter ->
+                assertReferralFilter(filter, includeIds, companyIds, cities, jobIds, pageable)
+                repoResult
+        }
+        1 * referralRepository.getReferralAnnouncementCount(_ as ReferralAnnouncementFilter) >> {
+            ReferralAnnouncementFilter filter ->
+                assertReferralFilter(filter, includeIds, companyIds, cities, jobIds, pageable)
+                repoResult.size()
+        }
+
+        when:
+        def result = service.getReferralAnnouncement(request, pageable)
+
+        then:
+        assert result.number == pageable.getOffset()
+        assert result.size == pageable.getPageSize()
+        assert result.totalPages == (repoSize > 0 ? 1 : 0)
+        assert result.numberOfElements == expectedIds.size()
+        assert result.totalElements == expectedIds.size()
+        assert haveSameElements(result.content.collect { getValue(it.referralId) }, expectedIds)
+
+
+        where:
+        includeIds        | companyIds              | cities              | jobIds                     | repoSize || expectedIds
+        asSet(1L, 2L, 3L) | asSet("c1", "c2", "c3") | asSet(testCity)     | singleton(testJobId.value) | 5        || asSet(1L, 2L, 3L)
+        null              | asSet("c1", "c3")       | singleton(testCity) | null                       | 5        || asSet(1L, 3L)
+        asSet(1L, 2L, 3L) | null                    | null                | singleton(testJobId.value) | 5        || asSet(1L, 2L, 3L)
+        null              | null                    | null                | singleton(testJobId.value) | 2        || asSet(1L, 2L)
+    }
+
+    void assertReferralFilter(ReferralAnnouncementFilter filter, Set<Long> includeIds, Set<String> companyIds,
+                              Set<String> cities, Set<Long> jobIds, Pageable pageable) {
+        assert jobIds ? filter.jobIds == jobIds : true
+        assert cities ? filter.cities == cities : true
+        assert companyIds ? filter.companyIds == companyIds : true
+        assert includeIds ? filter.includeIds == includeIds : true
+        assert filter.offset == pageable.getOffset()
+        assert filter.pageSize == pageable.getPageSize()
+    }
+
+    def mockReferralRepository(List<ReferralDetailsEntity> entities, ReferralAnnouncementFilterRequest request) {
+        entities.findAll {
+            (request.includeIds ? request.includeIds.collect { it.value }.contains(it.referralId) : true) &&
+                    (request.jobIds ? request.jobIds.collect { it.value }.contains(it.jobId) : true) &&
+                    (request.companyIds ? request.companyIds.collect { it.value }.contains(it.companyId) : true) &&
+                    (request.cities ? request.cities.contains(it.city) : true)
+        } as List<ReferralDetailsEntity>
+    }
+
+    def referralEntities(long size) {
+        size > 0 ? (1..size).collect {
+            [referralId: it,
+             jobId     : testJobId.value,
+             companyId : "c" + it,
+             authorId  : testUserId.value,
+             city      : testCity
+            ] as ReferralDetailsEntity
+        } : []
+    }
 
     def testJob() {
         job(testJobId, Instant.now().plus(2, DAYS))

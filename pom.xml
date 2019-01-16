@@ -291,6 +291,7 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <!-- mvn surefire-report:report -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-report-plugin</artifactId>
                     <version>${maven.surfire.plugin.report.version}</version>
